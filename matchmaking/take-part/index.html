@@ -94,7 +94,7 @@ select,input[type=date]{width:100%;font:inherit;font-size:16px;color:var(--ink);
   <h1>Tell us about your machine</h1>
   <p>Describe your academic, white-box research system: the most advanced one in your lab today, using information that is already public. We do not ask about any commercial platform, product or company you may be connected to. This is not a benchmark: no scores, no ranking, no comparison of platforms. You do not need to choose primitives: the matchmaking is our job. Every technical question is optional, and a public paper, talk or specification can replace any answer.</p>
   <div class="key">
-    <p><b>How to answer.</b> Tick what your named configuration offers today. Each tick opens a short row: choose a category, and say in a few words how your machine does it (the mechanism, a restriction, or a public example). That is what lets us match the right variant of a primitive. An unticked item means "?", not "unavailable". Plans go in question 6. The categories carry no numbers and no weights:</p>
+    <p><b>How to answer.</b> Tick what your named configuration offers today. Each tick opens a short row: choose a category, and say in a few words how your machine does it (the mechanism, a restriction, or a public example). That is what lets us match the right variant of a primitive. You need not explain every tick: describe up to two distinctive capabilities, and a public reference may replace any detail. An unticked or unexplained item means "?", not "unavailable". Plans go in question 6. The categories carry no numbers and no weights:</p>
     <ul>
       <li><b>Native now</b>: part of the configuration, with no added compilation.</li>
       <li><b>Routine now</b>: available through a construction your group regards as routine.</li>
@@ -146,13 +146,14 @@ select,input[type=date]{width:100%;font:inherit;font-size:16px;color:var(--ink);
 
   <fieldset>
     <legend><span class="n">3</span>Preparing, using and keeping states and data</legend>
+    <p class="hint" style="margin-top:0">Inverse and control mean the full coherent operation, not a change of pulse sign or a classical setting. For control, name the phase convention or a public construction.</p>
     <div class="ticks detail" data-name="states">
       <label class="check"><input type="checkbox" value="prepare declared reference or structured states, including mode resources"> Prepare declared reference or structured states, including photonic or other mode resources</label>
       <label class="check"><input type="checkbox" value="fresh copies by repeated preparation"> Fresh copies by repeating the same preparation</label>
       <label class="check"><input type="checkbox" value="hold several states together"> Hold several states together</label>
       <label class="check"><input type="checkbox" value="quantum memory between arrivals"> Keep quantum memory between arrivals</label>
-      <label class="check"><input type="checkbox" value="run a declared operation in reverse"> Run a declared operation in reverse</label>
-      <label class="check"><input type="checkbox" value="coherent control of an operation by a quantum register"> Control an operation coherently with a quantum register</label>
+      <label class="check"><input type="checkbox" value="inverse of a named coherent operation"> Apply the inverse of a named coherent operation, directly or by compilation</label>
+      <label class="check"><input type="checkbox" value="coherent control of a named operation by a quantum register"> Coherently control a named operation with a quantum register</label>
       <label class="check"><input type="checkbox" value="reversible processing or coherent data access"> Reversible data processing, or coherent data access (a lookup or memory queried in superposition)</label>
       <label class="check"><input type="checkbox" value="call a supplied operation repeatedly"> Call a supplied operation repeatedly, in sequence or in parallel</label>
       <label class="check"><input type="checkbox" value="extra registers or modes for temporary work"> Extra registers or modes for temporary work</label>
@@ -161,14 +162,15 @@ select,input[type=date]{width:100%;font:inherit;font-size:16px;color:var(--ink);
 
   <fieldset>
     <legend><span class="n">4</span>Readout and control during a run</legend>
+    <p class="hint" style="margin-top:0">For measurement or reset, say which subsystem is affected and what remains coherent.</p>
     <div class="ticks detail" data-name="readout">
-      <label class="check"><input type="checkbox" value="terminal readout in a computational or occupation basis"> Final readout in a computational or occupation basis</label>
+      <label class="check"><input type="checkbox" value="final readout: computational basis, occupation, counts or clicks"> Final readout: computational basis, occupation, photon counts or clicks</label>
       <label class="check"><input type="checkbox" value="selectable bases or observable measurements"> Selectable bases, or measurement of chosen observables</label>
       <label class="check"><input type="checkbox" value="joint readout on registers or copies"> Joint readout on registers or copies, for example Bell or overlap measurements</label>
       <label class="check"><input type="checkbox" value="measurement during a run"> Measurement during a run</label>
       <label class="check"><input type="checkbox" value="reset and reuse"> Reset and reuse</label>
       <label class="check"><input type="checkbox" value="outcome-dependent actions during the run"> Actions that depend on outcomes, during the same run</label>
-      <label class="check"><input type="checkbox" value="photon-number or threshold detection, heralding or post-selection"> Photon-number or threshold detection, heralding or post-selection</label>
+      <label class="check"><input type="checkbox" value="heralding or post-selection, with the accepted event declared"> Heralding or post-selection, with the accepted event declared</label>
       <label class="check"><input type="checkbox" value="classical host chooses the next run between runs"> A classical host chooses the next circuit or parameters between runs</label>
     </div>
   </fieldset>
@@ -197,6 +199,7 @@ select,input[type=date]{width:100%;font:inherit;font-size:16px;color:var(--ink);
         <label class="check"><input type="checkbox" value="connection to an external system"> A connection to an external system</label>
       </div>
       <span class="q" style="margin-top:6px">What crosses a connection</span>
+      <p class="hint" style="margin-top:0">Name the end systems and the direction, and say whether the delivered object is a state, entanglement or an operation.</p>
       <div class="ticks detail" data-name="crossing">
         <label class="check"><input type="checkbox" value="classical messages"> Classical messages</label>
         <label class="check"><input type="checkbox" value="state transfer"> State transfer</label>
