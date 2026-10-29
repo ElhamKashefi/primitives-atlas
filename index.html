@@ -114,6 +114,11 @@ footer{color:var(--muted);font-size:12px;max-width:1240px;margin:0 auto;padding:
 a.xl{color:var(--accent);text-decoration:none;border-bottom:1px dotted var(--accent)}a.xl:hover,a.xl:focus-visible{border-bottom-style:solid}
 .share{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:4px 0 2px}.share code{font-family:"IBM Plex Mono",monospace;font-size:12px;background:var(--chip);padding:2px 6px;border-radius:4px;user-select:all;overflow-wrap:anywhere}
 .howto{color:var(--ink2);font-size:14px;margin:8px 0 0;max-width:880px}
+.qrrow{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin:14px 0 0}
+.qr{display:flex;gap:10px;align-items:center;text-decoration:none;color:inherit;font-size:14px;line-height:1.35}
+.qrimg{background:#fff;border-radius:8px;padding:5px;display:block;border:1px solid var(--line)}
+.qrimg img{display:block;width:96px;height:96px}
+.qrbig{font-size:14px;color:var(--need,var(--accent))}
 </style>
 </head>
 <body>
@@ -128,6 +133,11 @@ a.xl{color:var(--accent);text-decoration:none;border-bottom:1px dotted var(--acc
   sources listed under About, tested against 2439 items from eight independent corpora, and independently reviewed.
   Unknowns are marked "?".</p>
   <p class="howto">Select a card to open its contract, its variants, the papers it rests on and its partners on the composition map. Every arXiv number and DOI opens the paper. Each card has its own link, shown at the top of the card, so it can be sent on its own.</p>
+<div class="qrrow" aria-label="QR codes">
+  <a class="qr" href=""><span class="qrimg"><img src="qr/atlas.svg" alt="QR code for the Atlas" width="120" height="120"></span><span><b>The Atlas</b><br>scan to open</span></a>
+  <a class="qr" href="matchmaking/"><span class="qrimg"><img src="qr/matchmaking.svg" alt="QR code for Primitive–Platform Matchmaking" width="120" height="120"></span><span><b>Matchmaking</b><br>scan to take part</span></a>
+  <a class="qrbig" href="qr/">Show both codes large</a>
+</div>
 </header>
 <main>
   <div class="tiles" id="tiles"></div>

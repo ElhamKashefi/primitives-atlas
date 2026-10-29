@@ -54,6 +54,11 @@ a{color:var(--need)}
 a:focus-visible,.btn:focus-visible{outline:2px solid var(--guar);outline-offset:3px}
 .small{font-size:14px;color:var(--muted)}
 footer{border-top:1px solid var(--line);padding-top:16px}
+.qrrow{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin:14px 0 0}
+.qr{display:flex;gap:10px;align-items:center;text-decoration:none;color:inherit;font-size:14px;line-height:1.35}
+.qrimg{background:#fff;border-radius:8px;padding:5px;display:block;border:1px solid var(--line)}
+.qrimg img{display:block;width:96px;height:96px}
+.qrbig{font-size:14px;color:var(--need,var(--accent))}
 </style>
 </head>
 <body>
@@ -67,6 +72,11 @@ footer{border-top:1px solid var(--line);padding-top:16px}
     <a class="btn primary" href="#" aria-disabled="true">Answer the five questions (opens Friday)</a>
     <a class="btn" href="../">Open the Atlas</a>
   </div>
+  <div class="qrrow" aria-label="QR codes">
+  <a class="qr" href="../"><span class="qrimg"><img src="../qr/atlas.svg" alt="QR code for the Atlas" width="120" height="120"></span><span><b>The Atlas</b><br>scan to open</span></a>
+  <a class="qr" href="../matchmaking/"><span class="qrimg"><img src="../qr/matchmaking.svg" alt="QR code for Primitive–Platform Matchmaking" width="120" height="120"></span><span><b>Matchmaking</b><br>scan to take part</span></a>
+  <a class="qrbig" href="../qr/">Show both codes large</a>
+</div>
 </header>
 
 <section>

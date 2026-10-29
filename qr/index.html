@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Atlas QR Codes</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400&display=swap">
+<style>
+/* Presenter page: two large codes side by side, stacked on a phone. Codes stay dark on white in both themes. */
+:root{--bg:#f7f6f2;--ink:#1d1d1b;--ink2:#4a4a46;--line:#e2e0d9;--need:#1E4E8C;--guar:#B5651D;
+  --display:"Source Serif 4",Georgia,serif;--body:"IBM Plex Sans",system-ui,sans-serif;--mono:"IBM Plex Mono",ui-monospace,monospace}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#15161a;--ink:#ececea;--ink2:#c4c4c0;--line:#2e3039;--need:#86ABE3;--guar:#E3A06A;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#15161a;--ink:#ececea;--ink2:#c4c4c0;--line:#2e3039;--need:#86ABE3;--guar:#E3A06A;color-scheme:dark}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 var(--body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:32px}
+main{max-width:1100px;margin:0 auto;display:grid;gap:28px}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(26px,4vw,36px);margin:0;text-align:center;text-wrap:balance}
+.codes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
+@media (max-width:720px){.codes{grid-template-columns:1fr}}
+figure{margin:0;display:grid;gap:12px;justify-items:center;text-align:center}
+figure a.box{background:#fff;border-radius:14px;padding:14px;display:block;width:min(100%,420px);border:3px solid var(--line)}
+figure img{display:block;width:100%;height:auto}
+figure.atlas a.box{border-color:var(--need)}figure.survey a.box{border-color:var(--guar)}
+figcaption{display:grid;gap:4px}
+figcaption b{font-family:var(--display);font-size:24px}
+figcaption span{color:var(--ink2)}
+figcaption code{font-family:var(--mono);font-size:13px;color:var(--ink2);overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<main>
+  <h1>Scan with your phone camera</h1>
+  <div class="codes">
+    <figure class="atlas"><a class="box" href="../"><img src="atlas.svg" alt="QR code for the Quantum Algorithmic Primitives Atlas"></a>
+      <figcaption><b>The Atlas</b><span>42 primitives, their contracts, variants and composition map</span><code>elhamkashefi.github.io/primitives-atlas</code></figcaption></figure>
+    <figure class="survey"><a class="box" href="../matchmaking/"><img src="matchmaking.svg" alt="QR code for Primitive–Platform Matchmaking"></a>
+      <figcaption><b>Primitive–Platform Matchmaking</b><span>Tell us about your machine in about ten minutes</span><code>elhamkashefi.github.io/primitives-atlas/matchmaking</code></figcaption></figure>
+  </div>
+</main>
+</body>
+</html>
