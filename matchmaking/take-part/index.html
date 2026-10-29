@@ -68,6 +68,21 @@ button.send[disabled]{opacity:.6;cursor:default}
 .links{display:flex;flex-wrap:wrap;gap:10px}
 .links a{font-size:14px;border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--need);text-decoration:none;background:var(--surface)}
 @media (prefers-reduced-motion:no-preference){.done{animation:in .25s ease-out}@keyframes in{from{opacity:.4;transform:translateY(6px)}to{opacity:1;transform:none}}}
+.key{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 16px;display:grid;gap:6px}
+.key p{font-size:14px;max-width:none}.key ul{margin:0;padding-left:1.2em;font-size:14px;color:var(--ink2);display:grid;gap:2px}.key b{color:var(--ink)}
+.group-h{font-family:var(--display);font-size:22px;font-weight:600;margin:10px 0 -4px;color:var(--ink)}
+.ticks{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:6px 14px}
+.tickrow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:6px;margin:4px 0 6px 28px}
+.tickrow[hidden]{display:none}
+@media (max-width:560px){.tickrow{grid-template-columns:1fr;margin-left:0}}
+.tickrow select,.tickrow input{font-size:14px;padding:6px 8px}
+.ticks.detail{grid-template-columns:1fr}
+.more{border-top:1px solid var(--line);padding-top:10px}.more summary{cursor:pointer;font-weight:600;font-size:15px;color:var(--need)}
+.opdetail{display:grid;gap:8px;margin-top:10px}
+.row3{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) minmax(0,1.6fr);gap:8px}
+@media (max-width:560px){.row3{grid-template-columns:1fr}}
+select,input[type=date]{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--field);border:1.5px solid var(--line);border-radius:8px;padding:9px 10px}
+.field .q{font-weight:600;font-size:15px;color:var(--ink)}
 </style>
 </head>
 <body>
@@ -77,83 +92,167 @@ button.send[disabled]{opacity:.6;cursor:default}
   <a class="back" href="../">&larr; Primitive–Platform Matchmaking</a>
   <p class="kicker">Take part · about ten minutes · born at Nobel Symposium 210</p>
   <h1>Tell us about your machine</h1>
-  <p>Tell us about your platform as it is today: this is not a benchmark. Six short questions, in your own words; the optional ones are marked. You do not need to choose primitives: the matchmaking is our job. Please share only what is already public. Switch on "confidential" beside any answer you prefer us not to quote: it then informs your own report only.</p>
+  <p>Describe one configuration of your machine as it is today, using information that is already public. This is not a benchmark: no scores, no ranking, no comparison of platforms. You do not need to choose primitives: the matchmaking is our job. Every technical question is optional, and a public paper, talk or specification can replace any answer.</p>
+  <div class="key">
+    <p><b>How to answer.</b> Tick what your named configuration offers today. Each tick opens a short row: choose a category, and say in a few words how your machine does it (the mechanism, a restriction, or a public example). That is what lets us match the right variant of a primitive. An unticked item means "?", not "unavailable". Plans go in question 6. The categories carry no numbers and no weights:</p>
+    <ul>
+      <li><b>Native now</b>: part of the configuration, with no added compilation.</li>
+      <li><b>Routine now</b>: available through a construction your group regards as routine.</li>
+      <li><b>Substantial overhead now</b>: available, with a cost you would want us to consider.</li>
+      <li><b>Not in this configuration now</b>: says nothing about future designs.</li>
+    </ul>
+  </div>
 </header>
 
 <form id="f" novalidate>
   <fieldset>
-    <legend><span class="n">1</span>Who you are</legend>
+    <legend><span class="n">1</span>Your configuration, and where the report goes</legend>
     <div class="row2">
-      <div class="field"><label class="q" for="name">Your name</label><input id="name" name="name" type="text" autocomplete="name" required><span class="err">Please add your name.</span></div>
-      <div class="field"><label class="q" for="email">Your email</label><input id="email" name="email" type="email" autocomplete="email" required><span class="err">Please add a valid email.</span></div>
+      <div class="field"><label class="q" for="group">Group and institution</label><input id="group" name="group" type="text" autocomplete="organization" required><span class="err">Please add your group.</span></div>
+      <div class="field"><label class="q" for="email">Reply email</label><input id="email" name="email" type="email" autocomplete="email" required><span class="err">Please add a valid email.</span></div>
     </div>
-    <div class="field"><label class="q" for="group">Group and institution</label><input id="group" name="group" type="text" autocomplete="organization" required><span class="err">Please add your group.</span></div>
-    <div class="field"><label class="q" for="contact">A team member as our contact <span class="opt">(optional, with their agreement: name and email)</span></label><input id="contact" name="contact" type="text"></div>
-  </fieldset>
-
-  <fieldset>
-    <legend><span class="n">2</span>Your architecture</legend>
-    <div class="field"><label class="q" for="platform">Platform</label><input id="platform" name="platform" type="text" placeholder="For example trapped ions, neutral atoms, photonics, superconducting, spins" required><span class="err">Please name your platform.</span></div>
-    <div class="field"><label class="q" for="scaling">How does it scale?</label><p class="hint">Module size, and how modules are linked: shuttling, photonic links, microwave, other. What changes from tens to thousands of qubits?</p><textarea id="scaling" name="scaling" required></textarea><span class="err">Please describe how it scales.</span>
-      <label class="conf"><input type="checkbox" name="conf_scaling"> Confidential</label></div>
-    <div class="field"><label class="q" for="modular">Is your machine modular, and how do the modules interact? <span class="opt">(optional)</span></label><p class="hint">For example: modules linked by photons, microwaves or moving qubits; the rate and quality of the links; which operations work across modules.</p><textarea id="modular" name="modular"></textarea>
-      <label class="conf"><input type="checkbox" name="conf_modular"> Confidential</label></div>
-  </fieldset>
-
-  <fieldset>
-    <legend><span class="n">3</span>Your Lego pieces</legend>
-    <div class="field"><label class="q" for="cheap">Three to five operations that are cheap or native on your machine</label><p class="hint">Gates, interactions, measurements, moves or links: whatever your machine does well.</p><textarea id="cheap" name="cheap" required></textarea><span class="err">Please list a few cheap or native operations.</span>
-      <label class="conf"><input type="checkbox" name="conf_cheap"> Confidential</label></div>
-    <div class="field"><label class="q" for="costly">Two or three operations that are most costly</label><textarea id="costly" name="costly" required></textarea><span class="err">Please list the costly operations.</span>
-      <label class="conf"><input type="checkbox" name="conf_costly"> Confidential</label></div>
-    <div class="field"><label class="q" for="other">Anything else we should know <span class="opt">(optional)</span></label><textarea id="other" name="other"></textarea>
-      <label class="conf"><input type="checkbox" name="conf_other"> Confidential</label></div>
-  </fieldset>
-
-  <fieldset>
-    <legend><span class="n">4</span>Input and output</legend>
-    <p class="hint" style="margin-top:0">How information goes in and out of your machine. Quantum links matter for verification, and for joining communication and computing.</p>
-    <div class="field"><label class="q" for="io_classical">Classical input and output <span class="opt">(optional)</span></label><p class="hint">How data and programs get in, how results come out, and how fast: loading data, mid-circuit readout and feedback, shots per second.</p><textarea id="io_classical" name="io_classical"></textarea>
-      <label class="conf"><input type="checkbox" name="conf_io_classical"> Confidential</label></div>
-    <div class="field"><label class="q" for="io_quantum">Quantum input and output <span class="opt">(optional)</span></label><p class="hint">Can your machine receive or send quantum states, for example through a photonic or network link? With which encoding, rate and fidelity? Is it used, or planned, for networking or for verifying a computation?</p><textarea id="io_quantum" name="io_quantum"></textarea>
-      <label class="conf"><input type="checkbox" name="conf_io_quantum"> Confidential</label></div>
-  </fieldset>
-
-  <fieldset>
-    <legend><span class="n">5</span>What you can share, and what you would like to ask</legend>
-    <div class="checks" role="group" aria-label="What you can offer">
-      <label class="check"><input type="checkbox" name="offer" value="papers"> Papers or links</label>
-      <label class="check"><input type="checkbox" name="offer" value="contact"> A contact person in my team</label>
-      <label class="check"><input type="checkbox" name="offer" value="call"> A 30-minute call</label>
+    <div class="row2">
+      <div class="field"><label class="q" for="config">Platform or configuration name</label><input id="config" name="config" type="text" placeholder="For example: trapped-ion module, neutral-atom array, photonic chip" required><span class="err">Please name the configuration.</span></div>
+      <div class="field"><label class="q" for="date">Snapshot date</label><input id="date" name="date" type="date"></div>
     </div>
-    <div class="field"><label class="q" for="links">Papers or links <span class="opt">(optional)</span></label><textarea id="links" name="links" placeholder="arXiv numbers, DOIs or web links"></textarea>
-      <label class="conf"><input type="checkbox" name="conf_links"> Confidential</label></div>
-    <div class="field"><label class="q" for="theory_q">A theory question for us <span class="opt">(optional)</span></label><p class="hint">Any question about algorithms, primitives, complexity or verification that matters for your machine. We will answer it as part of the matchmaking.</p><textarea id="theory_q" name="theory_q"></textarea></div>
+    <div class="field"><label class="q" for="ref">A public reference or short public description</label><p class="hint">A paper, talk, website or specification. It can stand in for any answer below.</p><textarea id="ref" name="ref" required></textarea><span class="err">Please add a reference or a short description.</span></div>
+    <div class="row2">
+      <div class="field"><label class="q" for="name">Your name <span class="opt">(optional)</span></label><input id="name" name="name" type="text" autocomplete="name"></div>
+      <div class="field"><label class="q" for="contact">Another contact <span class="opt">(optional, with their agreement)</span></label><input id="contact" name="contact" type="text"></div>
+    </div>
+  </fieldset>
+
+  <h2 class="group-h">Your Lego pieces: the operations your machine offers today</h2>
+
+  <fieldset>
+    <legend><span class="n">2</span>Physical structure and interactions</legend>
+    <div class="field"><span class="q">Information carriers</span>
+      <div class="ticks" data-name="carriers">
+        <label class="check"><input type="checkbox" value="qubits or other finite-dimensional registers"> Qubits or other finite-dimensional registers</label>
+        <label class="check"><input type="checkbox" value="bosonic modes"> Bosonic modes</label>
+        <label class="check"><input type="checkbox" value="fermionic modes"> Fermionic modes</label>
+        <label class="check"><input type="checkbox" value="hybrid or other"> Hybrid, or another description</label>
+      </div></div>
+    <div class="field"><span class="q">Interactions</span>
+      <div class="ticks detail" data-name="interactions">
+        <label class="check"><input type="checkbox" value="neighbouring gates"> Gates between neighbours</label>
+        <label class="check"><input type="checkbox" value="distant pairs, by direct coupling or routing"> Gates between distant pairs, by direct coupling or routing</label>
+        <label class="check"><input type="checkbox" value="collective or global operations"> Collective or global operations</label>
+        <label class="check"><input type="checkbox" value="programmable analogue evolution"> Programmable analogue evolution</label>
+        <label class="check"><input type="checkbox" value="engineered dissipative evolution"> Engineered dissipative evolution</label>
+      </div></div>
+    <div class="field"><label class="q" for="restriction">A restriction or symmetry, if relevant <span class="opt">(optional)</span></label><p class="hint">For example: the accessible graph, a Hamiltonian family, a fixed particle number or parity.</p><input id="restriction" name="restriction" type="text"></div>
   </fieldset>
 
   <fieldset>
-    <legend><span class="n">6</span>Your consent</legend>
+    <legend><span class="n">3</span>Preparing, using and keeping states and data</legend>
+    <div class="ticks detail" data-name="states">
+      <label class="check"><input type="checkbox" value="prepare declared reference or structured states, including mode resources"> Prepare declared reference or structured states, including photonic or other mode resources</label>
+      <label class="check"><input type="checkbox" value="fresh copies by repeated preparation"> Fresh copies by repeating the same preparation</label>
+      <label class="check"><input type="checkbox" value="hold several states together"> Hold several states together</label>
+      <label class="check"><input type="checkbox" value="quantum memory between arrivals"> Keep quantum memory between arrivals</label>
+      <label class="check"><input type="checkbox" value="run a declared operation in reverse"> Run a declared operation in reverse</label>
+      <label class="check"><input type="checkbox" value="coherent control of an operation by a quantum register"> Control an operation coherently with a quantum register</label>
+      <label class="check"><input type="checkbox" value="reversible processing or coherent data access"> Reversible data processing, or coherent data access (a lookup or memory queried in superposition)</label>
+      <label class="check"><input type="checkbox" value="call a supplied operation repeatedly"> Call a supplied operation repeatedly, in sequence or in parallel</label>
+      <label class="check"><input type="checkbox" value="extra registers or modes for temporary work"> Extra registers or modes for temporary work</label>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend><span class="n">4</span>Readout and control during a run</legend>
+    <div class="ticks detail" data-name="readout">
+      <label class="check"><input type="checkbox" value="terminal readout in a computational or occupation basis"> Final readout in a computational or occupation basis</label>
+      <label class="check"><input type="checkbox" value="selectable bases or observable measurements"> Selectable bases, or measurement of chosen observables</label>
+      <label class="check"><input type="checkbox" value="joint readout on registers or copies"> Joint readout on registers or copies, for example Bell or overlap measurements</label>
+      <label class="check"><input type="checkbox" value="measurement during a run"> Measurement during a run</label>
+      <label class="check"><input type="checkbox" value="reset and reuse"> Reset and reuse</label>
+      <label class="check"><input type="checkbox" value="outcome-dependent actions during the run"> Actions that depend on outcomes, during the same run</label>
+      <label class="check"><input type="checkbox" value="photon-number or threshold detection, heralding or post-selection"> Photon-number or threshold detection, heralding or post-selection</label>
+      <label class="check"><input type="checkbox" value="classical host chooses the next run between runs"> A classical host chooses the next circuit or parameters between runs</label>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend><span class="n">5</span>What enters, leaves and connects</legend>
+    <p class="hint" style="margin-top:0">Describe the interfaces available now. A local machine that only exchanges classical messages is a complete answer. No rates or fidelities needed.</p>
+    <div class="field"><span class="q">Classical input and output</span>
+      <div class="ticks" data-name="io_classical">
+        <label class="check"><input type="checkbox" value="programs, data or parameters in"> Programs, data or parameters in</label>
+        <label class="check"><input type="checkbox" value="raw outcomes, estimates or herald labels out"> Raw outcomes, estimates or herald labels out</label>
+      </div></div>
+    <div class="field"><span class="q">Quantum input and output</span>
+      <div class="ticks detail" data-name="io_quantum">
+        <label class="check"><input type="checkbox" value="state retained locally for the next step"> A state is kept locally for the next step</label>
+        <label class="check"><input type="checkbox" value="receive a quantum state"> Receive a quantum state</label>
+        <label class="check"><input type="checkbox" value="send a quantum state"> Send a quantum state</label>
+        <label class="check"><input type="checkbox" value="distribute entanglement"> Distribute entanglement</label>
+        <label class="check"><input type="checkbox" value="no external quantum interface now"> No external quantum interface now</label>
+      </div>
+      <input type="text" name="encoding" aria-label="Public encoding and direction" placeholder="Encoding and direction, if public (optional)"></div>
+    <div class="field"><span class="q">Modules</span>
+      <div class="ticks" data-name="modules">
+        <label class="check"><input type="checkbox" value="one module"> One module</label>
+        <label class="check"><input type="checkbox" value="several modules"> Several modules</label>
+        <label class="check"><input type="checkbox" value="connection to an external system"> A connection to an external system</label>
+      </div>
+      <span class="q" style="margin-top:6px">What crosses a connection</span>
+      <div class="ticks detail" data-name="crossing">
+        <label class="check"><input type="checkbox" value="classical messages"> Classical messages</label>
+        <label class="check"><input type="checkbox" value="state transfer"> State transfer</label>
+        <label class="check"><input type="checkbox" value="shared entanglement"> Shared entanglement</label>
+        <label class="check"><input type="checkbox" value="an operation implemented across modules"> An operation implemented across modules</label>
+      </div>
+      <input type="text" name="verif_iface" aria-label="Public test or verification interface" placeholder="A public test or verification interface using the same connection (optional)"></div>
+  </fieldset>
+
+  <fieldset>
+    <legend><span class="n">6</span>What to explore today, and your design intent</legend>
+    <div class="field"><span class="q">Useful resource patterns to explore with today's configuration</span>
+      <div class="ticks" data-name="workload">
+        <label class="check"><input type="checkbox" value="repeated short runs"> Repeated short runs</label>
+        <label class="check"><input type="checkbox" value="longer coherent sequences"> Longer coherent sequences</label>
+        <label class="check"><input type="checkbox" value="extra registers or stored copies"> Extra registers or stored copies</label>
+        <label class="check"><input type="checkbox" value="mode preparation and detection"> Mode preparation and detection</label>
+        <label class="check"><input type="checkbox" value="a classical feedback workflow"> A classical feedback workflow</label>
+      </div></div>
+    <div class="field"><span class="q">Design intent, kept separate from today's snapshot <span class="opt">(optional)</span></span>
+      <div class="ticks" data-name="intent">
+        <label class="check"><input type="checkbox" value="interface shaped by error correction or scale"> Our interface is shaped by error correction or scale</label>
+        <label class="check"><input type="checkbox" value="could change compilation or protocol"> We could change compilation or a protocol</label>
+        <label class="check"><input type="checkbox" value="could consider an architectural change"> We could consider an architectural change</label>
+        <label class="check"><input type="checkbox" value="a capability is publicly planned"> A capability is publicly planned</label>
+      </div>
+      <input type="text" name="code_ref" aria-label="Public error-correcting code or encoding reference" placeholder="A public error-correcting code or encoding reference, if relevant (optional)"></div>
+  </fieldset>
+
+  <fieldset>
+    <legend><span class="n">7</span>What would you most like a theorist to tell you?</legend>
+    <div class="field"><label class="q" for="theory_q">One question <span class="opt">(optional)</span></label><p class="hint">About an operation, a useful experiment, an access assumption, a verification route or a design choice. We reply with a relevant result or an identified open question.</p><textarea id="theory_q" name="theory_q"></textarea></div>
+  </fieldset>
+
+  <fieldset>
+    <legend><span class="n">8</span>Your consent</legend>
     <div class="charter">
-      <span><b>Open, academic and non-commercial:</b> a pilot of the Quantum Software Lab. We ask only for public knowledge; nothing under a non-disclosure agreement or export control.</span>
-      <span><b>Findings go to you first.</b> Nothing based on your answers is announced without your written approval; you can withdraw at any time.</span>
-      <span><b>Not a benchmark:</b> we match to your platform as it is today; no score, no ranking, no comparison of platforms. Public results are about what primitives need. <b>No exclusivity:</b> update, switch or leave whenever you wish. <b>You keep your data</b> and may use the findings freely.</span>
-      <span><b>Confidential answers</b> are read by the editor only, never appear in public outputs, and are never given to AI tools.</span>
+      <span><b>Open, academic and non-commercial:</b> a pilot of the Quantum Software Lab. Public information only; nothing under a non-disclosure agreement or export control.</span>
+      <span><b>Not a benchmark:</b> no score, no ranking, no comparison of platforms. Public results are about what primitives need. <b>No exclusivity:</b> update, switch or leave whenever you wish.</span>
+      <span><b>Findings go to you first.</b> Nothing based on your answers is published without your written approval; you can withdraw at any time. You keep your data and may use the findings freely.</span>
       <span>Full terms: <a href="../#charter">How we work together</a> · <a href="../#privacy">Privacy notice</a></span>
     </div>
     <div>
-      <div class="checks" id="agreebox"><label class="check"><input type="checkbox" id="agree" name="agree" required> I have read the terms and the privacy notice, and I agree to them</label></div>
+      <div class="checks" id="agreebox"><label class="check"><input type="checkbox" id="agree" name="agree" required> I have read the terms and the privacy notice, and I agree to take part</label></div>
       <span class="err" id="agreeerr">Please agree to the terms to send.</span>
     </div>
-    <div class="field"><span class="q">May we name you and your group as contributors on the Atlas?</span>
+    <div class="field"><span class="q">May we name you and your group as contributors on the Atlas? <span class="opt">(this is not approval to publish anything about your platform)</span></span>
       <div class="checks" role="radiogroup">
-        <label class="check"><input type="radio" name="naming" value="yes"> Yes</label>
         <label class="check"><input type="radio" name="naming" value="later" checked> Ask me when the report is ready</label>
+        <label class="check"><input type="radio" name="naming" value="yes"> Yes</label>
         <label class="check"><input type="radio" name="naming" value="no"> No</label>
       </div></div>
   </fieldset>
 
   <div class="sendbar"><button class="send" type="submit" id="send">Send my answers</button><span class="small" id="status" aria-live="polite"></span></div>
-  <p class="small">Questions: write to Elham Kashefi, <span style="user-select:all">ekashefi@exseed.ed.ac.uk</span>. Please do not send confidential material by email.</p>
+  <p class="small">Questions: write to Elham Kashefi, <span style="user-select:all">ekashefi@exseed.ed.ac.uk</span>.</p>
 </form>
 
 <section class="done" id="done" hidden aria-live="polite">
@@ -167,17 +266,28 @@ button.send[disabled]{opacity:.6;cursor:default}
 
 <script>
 // Where answers go. Empty: preview mode (nothing leaves the browser).
-// To collect into a Google Sheet: set FORM_ACTION to the Google Form's formResponse URL and map each field to its entry id.
+// To collect into a Google Sheet: set FORM_ACTION to the Google Form's formResponse URL and map each key to its entry id.
 const FORM_ACTION = "";
-const ENTRY = { name:"", email:"", group:"", contact:"", platform:"", scaling:"", modular:"", cheap:"", costly:"", other:"", io_classical:"", io_quantum:"", offer:"", links:"", theory_q:"", confidential:"", agree:"", naming:"" };
+const ENTRY = { group:"", email:"", config:"", date:"", ref:"", name:"", contact:"", carriers:"", interactions:"", restriction:"", states:"", readout:"",
+  io_classical:"", io_quantum:"", encoding:"", modules:"", crossing:"", verif_iface:"", workload:"", intent:"", code_ref:"", theory_q:"", agree:"", naming:"" };
 
 const f = document.getElementById("f");
 if (!FORM_ACTION) document.getElementById("pvbanner").hidden = false;
-const KEY = "mm_draft_v1";
-const fields = ["name","email","group","contact","platform","scaling","modular","cheap","costly","other","io_classical","io_quantum","links","theory_q"];
-// keep an unsent draft in this browser only
-try { const d = JSON.parse(localStorage.getItem(KEY) || "{}"); fields.forEach(k => { if (d[k]) f.elements[k].value = d[k]; }); } catch (e) {}
-f.addEventListener("input", () => { try { const d = {}; fields.forEach(k => d[k] = f.elements[k].value); localStorage.setItem(KEY, JSON.stringify(d)); } catch (e) {} });
+try { f.elements.date.value = new Date().toISOString().slice(0, 10); } catch (e) {}
+const CATS = ["Native now", "Routine now", "Substantial overhead now", "Not in this configuration now"];
+f.querySelectorAll(".ticks.detail input[type=checkbox]").forEach((cb, i) => {
+  const row = document.createElement("div"); row.className = "tickrow"; row.hidden = true;
+  const sel = document.createElement("select"); sel.setAttribute("aria-label", "Category: " + cb.value); sel.id = "cat" + i;
+  sel.append(new Option("Category", "")); CATS.forEach(c => sel.append(new Option(c, c)));
+  const how = document.createElement("input"); how.type = "text"; how.id = "how" + i; how.placeholder = "How, on your machine: mechanism, restriction or public example"; how.setAttribute("aria-label", "How, on your machine: " + cb.value);
+  row.append(sel, how); cb.closest("label").after(row);
+  cb.addEventListener("change", () => { row.hidden = !cb.checked; if (cb.checked) sel.focus(); });
+  cb._row = { sel, how };
+});
+const KEY = "mm_draft_v2";
+const texts = ["group","email","config","date","ref","name","contact","restriction","encoding","verif_iface","code_ref","theory_q"];
+try { const d = JSON.parse(localStorage.getItem(KEY) || "{}"); texts.forEach(k => { if (d[k]) f.elements[k].value = d[k]; }); } catch (e) {}
+f.addEventListener("input", () => { try { const d = {}; texts.forEach(k => d[k] = f.elements[k].value); localStorage.setItem(KEY, JSON.stringify(d)); } catch (e) {} });
 
 function check() {
   let ok = true, first = null;
@@ -193,27 +303,32 @@ function check() {
   if (first) first.focus();
   return ok;
 }
+const ticked = n => [...f.querySelectorAll(`.ticks[data-name="${n}"] input:checked`)].map(x => {
+  if (!x._row) return x.value;
+  const c = x._row.sel.value, h = x._row.how.value.trim();
+  return x.value + (c ? ` [${c}]` : "") + (h ? `: ${h}` : "");
+}).join("; ");
 
 f.addEventListener("submit", async e => {
   e.preventDefault();
   if (!check()) { document.getElementById("status").textContent = "Please complete the marked answers."; return; }
   const v = k => f.elements[k].value.trim();
-  const offer = [...f.querySelectorAll('input[name=offer]:checked')].map(x => x.parentElement.textContent.trim());
-  const conf = [...f.querySelectorAll('.conf input:checked')].map(x => x.name.replace("conf_", ""));
-  const naming = f.querySelector('input[name=naming]:checked')?.value || "later";
-  const data = { name:v("name"), email:v("email"), group:v("group"), contact:v("contact"), platform:v("platform"), scaling:v("scaling"), modular:v("modular"),
-    cheap:v("cheap"), costly:v("costly"), other:v("other"), io_classical:v("io_classical"), io_quantum:v("io_quantum"), offer:offer.join("; "), links:v("links"), theory_q:v("theory_q"), confidential:conf.join("; "), agree:"I agree", naming };
+  const data = { group:v("group"), email:v("email"), config:v("config"), date:v("date"), ref:v("ref"), name:v("name"), contact:v("contact"),
+    carriers:ticked("carriers"), interactions:ticked("interactions"), restriction:v("restriction"), states:ticked("states"), readout:ticked("readout"),
+    io_classical:ticked("io_classical"), io_quantum:ticked("io_quantum"), encoding:v("encoding"), modules:ticked("modules"), crossing:ticked("crossing"),
+    verif_iface:v("verif_iface"), workload:ticked("workload"), intent:ticked("intent"), code_ref:v("code_ref"), theory_q:v("theory_q"),
+    agree:"I agree", naming:f.querySelector('input[name=naming]:checked')?.value || "later" };
   const btn = document.getElementById("send"); btn.disabled = true; btn.textContent = "Sending…";
-  let sent = false;
   if (FORM_ACTION) {
     const body = new URLSearchParams();
     Object.entries(ENTRY).forEach(([k, id]) => { if (id) body.append(id, data[k] || ""); });
-    try { await fetch(FORM_ACTION, { method:"POST", mode:"no-cors", body }); sent = true; } catch (err) { sent = false; }
-    if (!sent) { btn.disabled = false; btn.textContent = "Send my answers"; document.getElementById("status").textContent = "Sending failed. Please check your connection and try again."; return; }
+    try { await fetch(FORM_ACTION, { method:"POST", mode:"no-cors", body }); }
+    catch (err) { btn.disabled = false; btn.textContent = "Send my answers"; document.getElementById("status").textContent = "Sending failed. Please check your connection and try again."; return; }
+    try { localStorage.removeItem(KEY); } catch (e) {}
   }
-  if (FORM_ACTION) { try { localStorage.removeItem(KEY); } catch (e) {} }
   const ul = document.getElementById("summary"); ul.replaceChildren();
-  [`${data.group}: ${data.platform}`, conf.length ? `Marked confidential: ${conf.join(", ")}` : "", offer.length ? `You offered: ${offer.join(", ").toLowerCase()}` : ""]
+  const n = ["carriers","interactions","states","readout","io_classical","io_quantum","modules","crossing","workload","intent"].reduce((a, k) => a + (data[k] ? data[k].split("; ").length : 0), 0);
+  [`${data.group}: ${data.config}, snapshot of ${data.date || "today"}`, `${n} capabilities described`, data.theory_q ? "Your theory question is recorded" : ""]
     .filter(Boolean).forEach(t => { const li = document.createElement("li"); li.textContent = t; ul.append(li); });
   document.getElementById("previewnote").hidden = !!FORM_ACTION;
   f.hidden = true; document.getElementById("done").hidden = false; window.scrollTo({ top: 0, behavior: "smooth" });

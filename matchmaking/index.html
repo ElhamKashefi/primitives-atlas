@@ -79,15 +79,15 @@ footer{border-top:1px solid var(--line);padding-top:16px}
 <header>
   <p class="kicker">Born at Nobel Symposium 210 · Quantum Software Lab</p>
   <h1>Primitive–Platform Matchmaking</h1>
-  <p class="lead">Tell us about your machine in about ten minutes. We map the algorithmic primitives onto it and send you a matchmaking report: which primitives fit your hardware natively, where the gaps are, and which experiments would show it.</p>
+  <p class="lead">Tell us about your machine in about ten minutes. We map the algorithmic primitives onto it and send you a matchmaking report: candidate primitive constructions for your machine, the assumptions to check, and experiments that would show them.</p>
   <p>This is an open, academic pilot run by the Quantum Software Lab (University of Edinburgh) with the research community. It is non-commercial: nothing you share is used for any commercial purpose. We ask only for knowledge that is already in the public domain, such as published papers, talks and public specifications. Any level of participation is welcome, from a single paragraph to a conversation with your team.</p>
   <div class="notbench">
-    <p><b>Not a benchmark.</b> We match primitives to your platform as it is today and tell you which fit it best. It is a snapshot of a current academic platform, not a score, a ranking or a verdict on your design.</p>
+    <p><b>Not a benchmark.</b> We match primitives to your platform as it is today and suggest candidate constructions for it. It is a snapshot of a current academic platform, not a score, a ranking or a verdict on your design.</p>
     <p><b>Public results are about primitives, not platforms.</b> What each primitive needs from hardware is open on the Atlas, so any group can design towards it. Nothing about your platform is published without your approval.</p>
     <p><b>Use it both ways.</b> If you design for error correction and scale independently of applications, the open requirements can help you adjust your design; tell us when it changes and we update your match. There is no exclusivity and no long-term commitment: update, switch or leave whenever you wish.</p>
   </div>
   <nav class="hub" aria-label="Three things to do here">
-    <a class="tile take" id="formlink" href="take-part/"><span class="n">1</span><b>Take part</b><span>Answer six short questions, about ten minutes.</span><em>Answer the questions</em></a>
+    <a class="tile take" id="formlink" href="take-part/"><span class="n">1</span><b>Take part</b><span>Answer eight short questions, about ten minutes.</span><em>Answer the questions</em></a>
     <a class="tile" href="../"><span class="n">2</span><b>Browse the Atlas</b><span>42 primitives, their contracts, variants and composition map: what we match to your machine.</span><em>Open the Atlas</em></a>
     <a class="tile" href="../talk/"><span class="n">3</span><b>Recall the talk</b><span>Selected slides: the goal, the engine, and what we do with hardware data.</span><em>See the slides</em></a>
   </nav>
@@ -115,24 +115,26 @@ footer{border-top:1px solid var(--line);padding-top:16px}
 </section>
 
 <section id="ask">
-  <h2>What we ask: six questions</h2>
+  <h2>What we ask: eight questions</h2>
   <ol class="ask">
-    <li><span><b>Who you are.</b> Group, name, email, and whether a team member can be our contact.</span></li>
-    <li><span><b>Your hardware.</b> Platform and how it scales; whether it is modular, and how the modules interact.</span></li>
-    <li><span><b>Your Lego pieces.</b> The three to five operations that are cheap or native on your machine, and the two or three that are most costly. In your own words.</span></li>
-    <li><span><b>Input and output.</b> How information goes in and out, classical and quantum: for example a photonic or network link, which matters for verification and for joining communication and computing.</span></li>
-    <li><span><b>What you can share, and what you would like to ask.</b> Papers or links, a contact person, a 30-minute call, and any theory question that matters for your machine.</span></li>
-    <li><span><b>Your consent</b> to the terms below.</span></li>
+    <li><span><b>Your configuration.</b> Group, a named configuration with a snapshot date, a public reference, and where the report goes.</span></li>
+    <li><span><b>Physical structure and interactions.</b> Carriers, and the interactions available today.</span></li>
+    <li><span><b>Preparing, using and keeping states and data.</b> Copies, memory, reverse and controlled operations, data access.</span></li>
+    <li><span><b>Readout and control during a run.</b> Measurement, reset, feedback, detection.</span></li>
+    <li><span><b>What enters, leaves and connects.</b> Classical and quantum input and output, modules, and what crosses a connection: links that matter for verification and for joining communication and computing.</span></li>
+    <li><span><b>What to explore today, and your design intent,</b> kept separate from today's snapshot.</span></li>
+    <li><span><b>What you would most like a theorist to tell you.</b></span></li>
+    <li><span><b>Your consent.</b></span></li>
   </ol>
-  <p class="small">You do not need to choose primitives. Browse the Atlas to see what we will match; the matchmaking is our job. Please share only what is already public, and nothing under a non-disclosure agreement or export control.</p>
+  <p class="small">Questions 2 to 5 are your Lego pieces: tick what your machine offers today, and for each tick say in a few words how it does it, with a category (native now, routine now, substantial overhead now, not in this configuration now). No numbers, no weights. You do not need to choose primitives: the matchmaking is our job. Please share only what is already public, and nothing under a non-disclosure agreement or export control.</p>
 </section>
 
 <section>
   <h2>What you get</h2>
   <ul class="get">
-    <li><b>A matchmaking report for your machine</b> in early 2027: primitives and variants that fit natively, the gaps, and experiments that would show it.</li>
+    <li><b>A matchmaking report for your machine</b> in early 2027: candidate primitive constructions, the assumptions still to check, and experiments that would show them.</li>
     <li><b>A hardware card for your machine in the Atlas,</b> credited to your group, once you approve it.</li>
-    <li><b>Searches by our algorithm engine,</b> where feasible, aimed at the operations your machine does best.</li>
+    <li><b>Searches by our algorithm engine,</b> where feasible, aimed at your machine's native operations.</li>
     <li><b>Answers to your theory questions</b> on algorithms, primitives, complexity or verification, as part of the matchmaking.</li>
     <li><b>An invitation to co-author</b> the joint white paper, for groups who contribute substantially.</li>
   </ul>
@@ -150,7 +152,7 @@ footer{border-top:1px solid var(--line);padding-top:16px}
     <li><b>Not a benchmark.</b> We match primitives to your current platform. We will not publish a ranking, a score or a comparison of platforms, and public results describe what primitives need, not how platforms perform.</li>
     <li><b>No exclusivity.</b> No long-term commitment and no exclusive partnership: update your answers, work with others, or leave whenever you wish.</li>
     <li><b>Credit.</b> Contributors are named on the Atlas and on their hardware card if they wish. The criteria for co-authorship of the joint white paper are sent to all contributors before any paper is drafted; other contributions are acknowledged.</li>
-    <li><b>Use of AI tools.</b> AI agents help us read published papers, build the cards and draft reports from non-confidential answers. Answers you mark as confidential are read by the editor only and are never given to AI tools or used in engine searches.</li>
+    <li><b>Use of AI tools.</b> AI agents help us read published papers, build the cards and draft reports from the public technical parts of your answers. Your contact details are never given to AI tools.</li>
     <li><b>The Atlas stays open.</b> It is public, under a Creative Commons Attribution licence (CC BY 4.0), and contributors help shape its next versions.</li>
   </ul>
 </section>
