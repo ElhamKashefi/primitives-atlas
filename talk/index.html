@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Algorithms as Collisions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* A reading column of selected slides, grouped by the four questions of the talk; each slide opens full size.
+   Same tokens as the Atlas: needs in blue, guarantees in ochre. */
+:root{
+  --bg:#f7f6f2;--surface:#ffffff;--ink:#1d1d1b;--ink2:#4a4a46;--muted:#6f6f69;--line:#e2e0d9;--need:#1E4E8C;--guar:#B5651D;
+  --display:"Source Serif 4",Georgia,serif;--body:"IBM Plex Sans",system-ui,sans-serif;--mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#15161a;--surface:#1e2026;--ink:#ececea;--ink2:#c4c4c0;--muted:#9a9a94;--line:#2e3039;--need:#86ABE3;--guar:#E3A06A;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#15161a;--surface:#1e2026;--ink:#ececea;--ink2:#c4c4c0;--muted:#9a9a94;--line:#2e3039;--need:#86ABE3;--guar:#E3A06A;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:36px 56px}
+main{max-width:960px;margin:0 auto;display:grid;gap:44px}
+header{display:grid;gap:12px}
+.kicker{font:500 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(28px,6vw,40px);line-height:1.12;margin:0;text-wrap:balance}
+h2{font-family:var(--display);font-weight:600;font-size:24px;line-height:1.2;margin:0;text-wrap:balance}
+p{margin:0;color:var(--ink2);max-width:68ch}
+nav.toc{display:flex;flex-wrap:wrap;gap:8px}
+nav.toc a,.links a{font-size:14px;border:1px solid var(--line);background:var(--surface);color:var(--need);border-radius:999px;padding:4px 12px;text-decoration:none}
+.links{display:flex;flex-wrap:wrap;gap:8px}
+section{display:grid;gap:18px;scroll-margin-top:16px}
+.part{font:600 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--guar)}
+figure{margin:0;display:grid;gap:10px}
+figure a{display:block;border-radius:10px;overflow:hidden;border:1px solid var(--line);background:#f7f6f2}
+figure img{display:block;width:100%;height:auto;aspect-ratio:16/9}
+figcaption{display:grid;gap:4px;max-width:68ch}
+figcaption b{color:var(--ink);font-weight:600}
+figcaption span{color:var(--ink2);font-size:15px}
+a:focus-visible{outline:2px solid var(--guar);outline-offset:3px}
+footer{border-top:1px solid var(--line);padding-top:16px}
+.small{font-size:14px;color:var(--muted)}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <p class="kicker">Nobel Symposium 210 · Stellenbosch · 26 October 2026</p>
+  <h1>Algorithms as Collisions</h1>
+  <p>Selected slides from the talk by Elham Kashefi, to recall the goal, the Atlas, the engine, and what we do with data from hardware. Select a slide to open it full size.</p>
+  <nav class="toc" aria-label="Parts">
+    <a href="#goal">The goal</a><a href="#contract">The contract</a><a href="#atlas">The Atlas and the record</a><a href="#engine">The engine</a><a href="#hardware">Hardware and the loop</a><a href="#stands">Where it stands</a>
+  </nav>
+  <div class="links"><a href="../">Open the Atlas</a><a href="../matchmaking/">Primitive–Platform Matchmaking</a><a href="../qr/">QR codes</a></div>
+</header>
+
+<section id="goal">
+  <p class="part">The goal</p>
+  <h2>Four questions, and the method</h2>
+  <figure><a href="img/questions.jpg"><img src="img/questions.jpg" alt="Slide 2, Four questions: how many quantum algorithms do we have; how is a new algorithm designed; can AI search for the next one; how can hardware runs join the AI search, and be trusted." loading="lazy" width="1600" height="900"></a>
+    <figcaption><b>Four questions.</b><span>The talk answers them in order: the inventory, how algorithms are designed, an AI engine that searches for new ones, and how hardware runs can join that search and be trusted.</span></figcaption></figure>
+  <figure><a href="img/method.jpg"><img src="img/method.jpg" alt="Slide 3, Working as an experimentalist: inventory of the particles, observation of the collisions, a hypothesis, and a test by an AI engine." loading="lazy" width="1600" height="900"></a>
+    <figcaption><b>Working as an experimentalist.</b><span>The primitives are the particles; an algorithm is what we see when a few of them collide. Inventory, observation, hypothesis, and a test: an AI engine finds new collisions, read with the same cards.</span></figcaption></figure>
+</section>
+
+<section id="contract">
+  <p class="part">Q1 · The contract</p>
+  <h2>A primitive is identified by its contract</h2>
+  <figure><a href="img/contract.jpg"><img src="img/contract.jpg" alt="Slide 6: needs (access, promise) and guarantees (output, error, cost); composition when the guarantee of one meets the needs of the next; a table of the five places for procedural and architectural primitives." loading="lazy" width="1600" height="900"></a>
+    <figcaption><b>Five places, the same for every primitive.</b><span>Needs: access and promise. Guarantees: output, error and cost. Two primitives compose when the guarantee of one meets the needs of the next. For an architecture, expressivity takes the place of error.</span></figcaption></figure>
+  <figure><a href="img/proc-example.jpg"><img src="img/proc-example.jpg" alt="Slide 7: amplitude estimation as a contract, with the construction inside the box and a 2019 variant." loading="lazy" width="1600" height="900"></a>
+    <figcaption><b>A procedural example: amplitude estimation.</b><span>The construction inside the box is hidden. A variant keeps the needs and the output, and changes the construction.</span></figcaption></figure>
+  <figure><a href="img/arch-example.jpg"><img src="img/arch-example.jpg" alt="Slide 9: the quantum convolutional network as a contract, with its circuit structure and status." loading="lazy" width="1600" height="900"></a>
+    <figcaption><b>An architectural example: the quantum convolutional network.</b><span>The same five places. Here the structure is part of the identity, and trainability and simulability are status, outside the contract.</span></figcaption></figure>
+</section>
+
+<section id="atlas">
+  <p class="part">Q1 and Q2 · The Atlas and the record</p>
+  <h2>42 primitives, and how papers combine them</h2>
+  <figure><a href="img/atlas.jpg"><img src="img/atlas.jpg" alt="Slide 11: 42 primitives, 24 procedural, 13 architectural and 5 recurring compositions, checked against 2,439 entries from eight collections." loading="lazy" width="1600" height="900"></a>
+    <figcaption><b>The Atlas: 42 primitives, of three kinds.</b><span>Checked against 2,439 entries from eight collections. <a href="../">Open the Atlas</a> to read every card.</span></figcaption></figure>
+  <figure><a href="img/width.jpg"><img src="img/width.jpg" alt="Slide 13: bar chart; most of about 1,600 papers combine one, two or three primitives; the average is near two every year." loading="lazy" width="1600" height="900"></a>
+    <figcaption><b>Most papers combine one, two or three primitives.</b><span>About 1,600 papers, labelled from title and abstract; the counts are approximate.</span></figcaption></figure>
+  <figure><a href="img/theory.jpg"><img src="img/theory.jpg" alt="Slide 28: the hypothesis that progress happens inside a known primitive, the prediction to test, the evidence and the caveat." loading="lazy" width="1600" height="900"></a>
+    <figcaption><b>The hypothesis.</b><span>Progress happens inside a known primitive: a new variant, better on one entry of its contract. The prediction: an engine that combines known algorithms finds mostly variants.</span></figcaption></figure>
+  <figure><a href="img/chains-summary.jpg"><img src="img/chains-summary.jpg" alt="Slide 38: fourteen chains of results rebuilt from the sources, about 130 steps from 1992 to 2026." loading="lazy" width="1600" height="900"></a>
+    <figcaption><b>Collisions on the record.</b><span>Fourteen chains rebuilt from the sources: fewer than three primitives per step, and no new primitive in the five chains reviewed closely.</span></figcaption></figure>
+</section>
+
+<section id="engine">
+  <p class="part">Q3 · The engine</p>
+  <h2>Pathfinder: from the past arXiv to the future one</h2>
+  <figure><a href="img/pf-idea.jpg"><img src="img/pf-idea.jpg" alt="Slide 40: the engine combines two algorithm papers and writes a research note; a scientist checks it." loading="lazy" width="1600" height="900"></a>
+    <figcaption><b>Two searches.</b><span>The engine combines two algorithm papers and writes a research note with one precise claim. Only after a scientist checks it against the sources is it a result.</span></figcaption></figure>
+  <figure><a href="img/pf-engine.jpg"><img src="img/pf-engine.jpg" alt="Slide 41: the agentic model, from corpus and scan to novelty check, question, research, verification, AI referees and the scientist." loading="lazy" width="1600" height="900"></a>
+    <figcaption><b>How the engine works.</b><span>Where two papers meet is exactly the contract. The next step is to collide the primitives themselves, contract against contract.</span></figcaption></figure>
+  <figure><a href="img/pf-zoo.jpg"><img src="img/pf-zoo.jpg" alt="Slide 42: from 8,385 pairs to 83 research notes, with the novelty checks and the blind AI ratings." loading="lazy" width="1600" height="900"></a>
+    <figcaption><b>From 8,385 pairs to 83 research notes.</b><span>Rated blind by AI; no human expert has yet read them.</span></figcaption></figure>
+  <figure><a href="img/pf-hyp.jpg"><img src="img/pf-hyp.jpg" alt="Slide 45: the 83 notes read with the cards: 38 variants, 16 compositions, 27 limitations, 2 not decomposable, no new primitive." loading="lazy" width="1600" height="900"></a>
+    <figcaption><b>What the engine found, read with the cards.</b><span>38 variants, 16 compositions, 27 limitations and no new primitive. The engine's output looks like the record.</span></figcaption></figure>
+</section>
+
+<section id="hardware">
+  <p class="part">Q4 · Hardware and the loop</p>
+  <h2>A device turns a stated contract into a measured one</h2>
+  <figure><a href="img/loop.jpg"><img src="img/loop.jpg" alt="Slide 47: today a filter, next a closed loop where AI proposes an experiment, a device runs it and a trusted score returns." loading="lazy" width="1600" height="900"></a>
+    <figcaption><b>From a filter to a loop.</b><span>Next: AI proposes an experiment, a device runs it, a trusted score returns, and the engine improves. A device measures outputs and costs; the error needs a check.</span></figcaption></figure>
+  <figure><a href="img/hw-variants.jpg"><img src="img/hw-variants.jpg" alt="Slide 48: which primitive does each machine run natively, for photonics, Rydberg atoms, trapped ions and superconducting qubits, with the proposal of hardware-native variants on the cards." loading="lazy" width="1600" height="900"></a>
+    <figcaption><b>Which primitive does each machine run natively?</b><span>Variants evolve on machines as they do on paper. This is the question behind <a href="../matchmaking/">Primitive–Platform Matchmaking</a>.</span></figcaption></figure>
+  <figure><a href="img/v-check.jpg"><img src="img/v-check.jpg" alt="Slide 49: how to score what the loop returns, for the algorithm and for the run; the output type decides the check." loading="lazy" width="1600" height="900"></a>
+    <figcaption><b>How do we score what the loop returns?</b><span>The mathematics is checked by agents and, later, formal proofs. For the run, the output type decides the check; for samples it is still open.</span></figcaption></figure>
+</section>
+
+<section id="stands">
+  <p class="part">Where it stands</p>
+  <h2>Where algorithm design stands</h2>
+  <figure><a href="img/synthesis.jpg"><img src="img/synthesis.jpg" alt="Slide 50: what we have, what is rare, and what connects the chain from application to algorithm, primitives, hardware and error correction." loading="lazy" width="1600" height="900"></a>
+    <figcaption><b>What we have, what is rare, what connects the chain.</b><span>Each step, from application to algorithm to hardware, must meet the contract of the next. The question for the discussion: which composition should we test next, and on which machine?</span></figcaption></figure>
+</section>
+
+<footer>
+  <p class="small">Slides from "Algorithms as collisions", Elham Kashefi, Nobel Symposium 210, Session 1 Algorithms, 26 October 2026. The engine is Pathfinder, built with Vincent Danos and William Waites (Danos, Kashefi and Waites 2026, <a href="https://hal.science/hal-05766056v1">hal-05766056</a>).</p>
+</footer>
+</main>
+</body>
+</html>
