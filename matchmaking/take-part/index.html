@@ -338,8 +338,9 @@ f.addEventListener("submit", async e => {
     .filter(Boolean).forEach(t => { const li = document.createElement("li"); li.textContent = t; ul.append(li); });
   document.getElementById("previewnote").hidden = !!FORM_ACTION;
   f.hidden = true; document.getElementById("done").hidden = false; window.scrollTo({ top: 0, behavior: "smooth" });
+  resetForm(false);
 });
-function resetForm() {
+function resetForm(show = true) {
   f.reset();
   f.querySelectorAll(".tickrow").forEach(r => r.hidden = true);
   f.querySelectorAll(".field.bad").forEach(el => el.classList.remove("bad"));
@@ -348,6 +349,7 @@ function resetForm() {
   try { f.elements.date.value = new Date().toISOString().slice(0, 10); } catch (e) {}
   const btn = document.getElementById("send"); btn.disabled = false; btn.textContent = "Send my answers";
   document.getElementById("status").textContent = "";
+  if (!show) return;
   document.getElementById("done").hidden = true; f.hidden = false;
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
