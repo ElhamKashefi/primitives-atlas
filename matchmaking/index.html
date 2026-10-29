@@ -59,6 +59,16 @@ footer{border-top:1px solid var(--line);padding-top:16px}
 .qrimg{background:#fff;border-radius:8px;padding:5px;display:block;border:1px solid var(--line)}
 .qrimg img{display:block;width:96px;height:96px}
 .qrbig{font-size:14px;color:var(--need,var(--accent))}
+.hub{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:6px}
+@media (max-width:640px){.hub{grid-template-columns:1fr}}
+.tile{display:grid;gap:6px;align-content:start;background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:16px;text-decoration:none;color:var(--ink2);min-width:0}
+.tile:hover,.tile:focus-visible{border-color:var(--need)}
+.tile .n{font:600 13px var(--mono);color:var(--need)}
+.tile b{font-family:var(--display);font-size:20px;color:var(--ink)}
+.tile span:not(.n){font-size:15px}
+.tile em{font-style:normal;font-weight:600;color:var(--need);font-size:15px}
+.tile.take{border-color:var(--need);background:color-mix(in srgb,var(--need) 7%,var(--surface))}
+.tile[aria-disabled="true"]{cursor:default}.tile[aria-disabled="true"] em{color:var(--muted)}
 </style>
 </head>
 <body>
@@ -68,16 +78,12 @@ footer{border-top:1px solid var(--line);padding-top:16px}
   <p class="kicker">Quantum Algorithmic Primitives Atlas · Nobel Symposium 210</p>
   <h1>Primitive–Platform Matchmaking</h1>
   <p class="lead">Tell us about your machine in about ten minutes. We map the algorithmic primitives onto it and send you a matchmaking report: which primitives fit your architecture natively, where the gaps are, and which experiments would show it.</p>
-  <div class="cta">
-    <a class="btn primary" href="#" aria-disabled="true">Answer the five questions (opens Friday)</a>
-    <a class="btn" href="../">Open the Atlas</a>
-    <a class="btn" href="../talk/">Slides from the talk</a>
-  </div>
-  <div class="qrrow" aria-label="QR codes">
-  <a class="qr" href="../"><span class="qrimg"><img src="../qr/atlas.svg" alt="QR code for the Atlas" width="120" height="120"></span><span><b>The Atlas</b><br>scan to open</span></a>
-  <a class="qr" href="../matchmaking/"><span class="qrimg"><img src="../qr/matchmaking.svg" alt="QR code for Primitive–Platform Matchmaking" width="120" height="120"></span><span><b>Matchmaking</b><br>scan to take part</span></a>
-  <a class="qrbig" href="../qr/">Show both codes large</a>
-</div>
+  <nav class="hub" aria-label="Three things to do here">
+    <a class="tile take" id="formlink" href="#" aria-disabled="true"><span class="n">1</span><b>Take part</b><span>Answer five short questions, about ten minutes.</span><em>Opens Friday</em></a>
+    <a class="tile" href="../"><span class="n">2</span><b>Browse the Atlas</b><span>42 primitives, their contracts, variants and composition map: what we match to your machine.</span><em>Open the Atlas</em></a>
+    <a class="tile" href="../talk/"><span class="n">3</span><b>Recall the talk</b><span>Selected slides: the goal, the engine, and what we do with hardware data.</span><em>See the slides</em></a>
+  </nav>
+  <div class="qrrow"><a class="qr" href="../qr/"><span class="qrimg"><img src="../qr/matchmaking.svg" alt="QR code for this page" width="120" height="120"></span><span><b>Share this page</b><br>scan to open it on a phone</span></a></div>
 </header>
 
 <section>
