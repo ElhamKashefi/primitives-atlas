@@ -59,6 +59,9 @@ input:focus-visible,textarea:focus-visible{outline:none;border-color:var(--need)
 button.send{font:600 16px var(--body);background:var(--need);color:var(--bg);border:0;border-radius:999px;padding:12px 26px;cursor:pointer}
 button.send:focus-visible{outline:2px solid var(--guar);outline-offset:3px}
 button.send[disabled]{opacity:.6;cursor:default}
+button.clear{font:500 15px var(--body);background:var(--surface);color:var(--ink2);border:1px solid var(--line);border-radius:999px;padding:10px 20px;cursor:pointer}
+button.clear:focus-visible{outline:2px solid var(--guar);outline-offset:3px}
+button.clear.arm{border-color:var(--guar);color:var(--ink)}
 .small{font-size:13px;color:var(--muted)}
 .pv{background:color-mix(in srgb,var(--guar) 14%,var(--surface));color:var(--ink);border:1px solid var(--guar);border-radius:10px;padding:10px 14px;font-size:14px;margin:0}
 .done{background:var(--surface);border:1.5px solid var(--ok);border-radius:12px;padding:22px;display:grid;gap:12px}
@@ -254,7 +257,7 @@ select,input[type=date]{width:100%;font:inherit;font-size:16px;color:var(--ink);
       </div></div>
   </fieldset>
 
-  <div class="sendbar"><button class="send" type="submit" id="send">Send my answers</button><span class="small" id="status" aria-live="polite"></span></div>
+  <div class="sendbar"><button class="send" type="submit" id="send">Send my answers</button><button class="clear" type="button" id="clear">Clear the form</button><span class="small" id="status" aria-live="polite"></span></div>
   <p class="small">Questions: write to Elham Kashefi, <span style="user-select:all">ekashefi@exseed.ed.ac.uk</span>.</p>
 </form>
 
@@ -262,7 +265,7 @@ select,input[type=date]{width:100%;font:inherit;font-size:16px;color:var(--ink);
   <h2>Thank you</h2>
   <p>Your report comes to you first, and nothing about your platform is made public without your written approval.</p>
   <ul id="summary"></ul>
-  <div class="links"><a href="../../">Browse the Atlas</a><a href="../../talk/">Slides from the talk</a><a href="../">Back to Matchmaking</a></div>
+  <div class="links"><button class="clear" type="button" id="again">Fill in the form again</button><a href="../../">Browse the Atlas</a><a href="../../talk/">Slides from the talk</a><a href="../">Back to Matchmaking</a></div>
   <p class="preview" id="previewnote" hidden>Preview: answers are not yet being collected. Collection starts when the form is connected.</p>
 </section>
 </main>
@@ -336,6 +339,29 @@ f.addEventListener("submit", async e => {
   document.getElementById("previewnote").hidden = !!FORM_ACTION;
   f.hidden = true; document.getElementById("done").hidden = false; window.scrollTo({ top: 0, behavior: "smooth" });
 });
+function resetForm() {
+  f.reset();
+  f.querySelectorAll(".tickrow").forEach(r => r.hidden = true);
+  f.querySelectorAll(".field.bad").forEach(el => el.classList.remove("bad"));
+  document.getElementById("agreeerr").style.display = "";
+  try { localStorage.removeItem(KEY); } catch (e) {}
+  try { f.elements.date.value = new Date().toISOString().slice(0, 10); } catch (e) {}
+  const btn = document.getElementById("send"); btn.disabled = false; btn.textContent = "Send my answers";
+  document.getElementById("status").textContent = "";
+  document.getElementById("done").hidden = true; f.hidden = false;
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+const clear = document.getElementById("clear"); let armed = null;
+clear.addEventListener("click", () => {
+  if (!armed) {
+    clear.classList.add("arm"); clear.textContent = "Click again to clear all answers";
+    armed = setTimeout(() => { armed = null; clear.classList.remove("arm"); clear.textContent = "Clear the form"; }, 5000);
+    return;
+  }
+  clearTimeout(armed); armed = null; clear.classList.remove("arm"); clear.textContent = "Clear the form";
+  resetForm(); document.getElementById("status").textContent = "The form is empty again.";
+});
+document.getElementById("again").addEventListener("click", resetForm);
 </script>
 </body>
 </html>
