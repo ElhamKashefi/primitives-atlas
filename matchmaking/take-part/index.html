@@ -271,14 +271,13 @@ select,input[type=date]{width:100%;font:inherit;font-size:16px;color:var(--ink);
 </main>
 
 <script>
-// Where answers go. Empty: preview mode (nothing leaves the browser).
-// To collect into a Google Sheet: set FORM_ACTION to the Google Form's formResponse URL and map each key to its entry id.
-const FORM_ACTION = "";
-const ENTRY = { group:"", email:"", config:"", date:"", ref:"", name:"", contact:"", carriers:"", interactions:"", restriction:"", states:"", readout:"",
-  io_classical:"", io_quantum:"", encoding:"", modules:"", crossing:"", verif_iface:"", workload:"", intent:"", code_ref:"", theory_q:"", agree:"", naming:"" };
+// Where answers go: emailed to the editor's University of Edinburgh mailbox through FormSubmit (formsubmit.co).
+// COLLECTING stays false (preview banner, nothing sent) until the relay has been activated from that mailbox.
+const FORM_ACTION = "https://formsubmit.co/ajax/ekashefi@exseed.ed.ac.uk";
+const COLLECTING = false;
 
 const f = document.getElementById("f");
-if (!FORM_ACTION) document.getElementById("pvbanner").hidden = false;
+if (!COLLECTING) document.getElementById("pvbanner").hidden = false;
 try { f.elements.date.value = new Date().toISOString().slice(0, 10); } catch (e) {}
 const CATS = ["Native now", "Routine now", "Substantial overhead now", "Not in this configuration now"];
 f.querySelectorAll(".ticks.detail input[type=checkbox]").forEach((cb, i) => {
@@ -325,18 +324,20 @@ f.addEventListener("submit", async e => {
     verif_iface:v("verif_iface"), workload:ticked("workload"), intent:ticked("intent"), code_ref:v("code_ref"), theory_q:v("theory_q"),
     agree:"I agree", naming:f.querySelector('input[name=naming]:checked')?.value || "later" };
   const btn = document.getElementById("send"); btn.disabled = true; btn.textContent = "Sending…";
-  if (FORM_ACTION) {
-    const body = new URLSearchParams();
-    Object.entries(ENTRY).forEach(([k, id]) => { if (id) body.append(id, data[k] || ""); });
-    try { await fetch(FORM_ACTION, { method:"POST", mode:"no-cors", body }); }
-    catch (err) { btn.disabled = false; btn.textContent = "Send my answers"; document.getElementById("status").textContent = "Sending failed. Please check your connection and try again."; return; }
-    try { localStorage.removeItem(KEY); } catch (e) {}
+  if (COLLECTING) {
+    const mail = { _subject: `Matchmaking answers: ${data.group}, ${data.config}`, _template: "table", _replyto: data.email, _captcha: "false",
+      ...data, submitted: new Date().toISOString(), form_version: "v2", answers_json: JSON.stringify(data) };
+    try {
+      const r = await fetch(FORM_ACTION, { method:"POST", headers:{ "Content-Type":"application/json", "Accept":"application/json" }, body: JSON.stringify(mail) });
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok || String(j.success) !== "true") throw new Error(j.message || r.status);
+    } catch (err) { btn.disabled = false; btn.textContent = "Send my answers"; document.getElementById("status").textContent = "Sending failed, and your answers are still here. Please try again, or write to ekashefi@exseed.ed.ac.uk."; return; }
   }
   const ul = document.getElementById("summary"); ul.replaceChildren();
   const n = ["carriers","interactions","states","readout","io_classical","io_quantum","modules","crossing","workload","intent"].reduce((a, k) => a + (data[k] ? data[k].split("; ").length : 0), 0);
   [`${data.group}: ${data.config}, snapshot of ${data.date || "today"}`, `${n} capabilities described`, data.theory_q ? "Your theory question is recorded" : ""]
     .filter(Boolean).forEach(t => { const li = document.createElement("li"); li.textContent = t; ul.append(li); });
-  document.getElementById("previewnote").hidden = !!FORM_ACTION;
+  document.getElementById("previewnote").hidden = COLLECTING;
   f.hidden = true; document.getElementById("done").hidden = false; window.scrollTo({ top: 0, behavior: "smooth" });
   resetForm(false);
 });
