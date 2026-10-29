@@ -8,4 +8,9 @@ partners on the composition map. Companion to the talk "Algorithms as collisions
 
 Website: https://elhamkashefi.github.io/primitives-atlas/
 
+Primitive–Platform Matchmaking, an open, non-commercial pilot of the Quantum Software Lab:
+https://elhamkashefi.github.io/primitives-atlas/matchmaking/
+
+Licence: content under Creative Commons Attribution 4.0 International (CC BY 4.0); see LICENSE.
+
 Cite as: E. Kashefi (ed.), Quantum Algorithmic Primitives Atlas, version 0.4, 27 October 2026.

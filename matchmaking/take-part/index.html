@@ -60,6 +60,7 @@ button.send{font:600 16px var(--body);background:var(--need);color:var(--bg);bor
 button.send:focus-visible{outline:2px solid var(--guar);outline-offset:3px}
 button.send[disabled]{opacity:.6;cursor:default}
 .small{font-size:13px;color:var(--muted)}
+.pv{background:color-mix(in srgb,var(--guar) 14%,var(--surface));color:var(--ink);border:1px solid var(--guar);border-radius:10px;padding:10px 14px;font-size:14px;margin:0}
 .done{background:var(--surface);border:1.5px solid var(--ok);border-radius:12px;padding:22px;display:grid;gap:12px}
 .done h2{font-family:var(--display);font-size:24px;margin:0;color:var(--ink)}
 .done ul{margin:0;padding-left:1.2em;color:var(--ink2);display:grid;gap:4px}
@@ -71,11 +72,12 @@ button.send[disabled]{opacity:.6;cursor:default}
 </head>
 <body>
 <main>
+<p class="pv" id="pvbanner" hidden>Preview: this form is not collecting answers yet. You can try it; nothing is saved.</p>
 <header>
   <a class="back" href="../">&larr; Primitive–Platform Matchmaking</a>
   <p class="kicker">Take part · about ten minutes</p>
   <h1>Tell us about your machine</h1>
-  <p>Five short questions, in your own words. You do not need to choose primitives: the matchmaking is our job. Switch on "confidential" beside any answer that should inform your own report only.</p>
+  <p>Five short questions, in your own words. You do not need to choose primitives: the matchmaking is our job. Please share only what is already public. Switch on "confidential" beside any answer you prefer us not to quote: it then informs your own report only.</p>
 </header>
 
 <form id="f" novalidate>
@@ -86,7 +88,7 @@ button.send[disabled]{opacity:.6;cursor:default}
       <div class="field"><label class="q" for="email">Your email</label><input id="email" name="email" type="email" autocomplete="email" required><span class="err">Please add a valid email.</span></div>
     </div>
     <div class="field"><label class="q" for="group">Group and institution</label><input id="group" name="group" type="text" autocomplete="organization" required><span class="err">Please add your group.</span></div>
-    <div class="field"><label class="q" for="contact">A team member as our contact <span class="opt">(optional: name and email)</span></label><input id="contact" name="contact" type="text"></div>
+    <div class="field"><label class="q" for="contact">A team member as our contact <span class="opt">(optional, with their agreement: name and email)</span></label><input id="contact" name="contact" type="text"></div>
   </fieldset>
 
   <fieldset>
@@ -120,13 +122,14 @@ button.send[disabled]{opacity:.6;cursor:default}
   <fieldset>
     <legend><span class="n">5</span>Your consent</legend>
     <div class="charter">
-      <span><b>Findings go to you first.</b> Nothing about your platform is announced without your written approval; you can withdraw at any time.</span>
+      <span><b>Open, academic and non-commercial:</b> a pilot of the Quantum Software Lab. We ask only for public knowledge; nothing under a non-disclosure agreement or export control.</span>
+      <span><b>Findings go to you first.</b> Nothing based on your answers is announced without your written approval; you can withdraw at any time.</span>
       <span><b>You keep your data</b> and may use the findings freely. <b>Fit, not ranking:</b> no league table of platforms.</span>
-      <span><b>Confidential answers</b> inform your own report only, never appear in public outputs, and are not given to AI tools.</span>
-      <span>Full terms: <a href="../#charter">How we work together</a></span>
+      <span><b>Confidential answers</b> are read by the editor only, never appear in public outputs, and are never given to AI tools.</span>
+      <span>Full terms: <a href="../#charter">How we work together</a> · <a href="../#privacy">Privacy notice</a></span>
     </div>
     <div>
-      <div class="checks" id="agreebox"><label class="check"><input type="checkbox" id="agree" name="agree" required> I have read the terms and agree to them</label></div>
+      <div class="checks" id="agreebox"><label class="check"><input type="checkbox" id="agree" name="agree" required> I have read the terms and the privacy notice, and I agree to them</label></div>
       <span class="err" id="agreeerr">Please agree to the terms to send.</span>
     </div>
     <div class="field"><span class="q">May we name you and your group as contributors on the Atlas?</span>
@@ -138,7 +141,7 @@ button.send[disabled]{opacity:.6;cursor:default}
   </fieldset>
 
   <div class="sendbar"><button class="send" type="submit" id="send">Send my answers</button><span class="small" id="status" aria-live="polite"></span></div>
-  <p class="small">Questions: write to Elham Kashefi, <span style="user-select:all">ekashefi@gmail.com</span>.</p>
+  <p class="small">Questions: write to Elham Kashefi, <span style="user-select:all">ekashefi@gmail.com</span>. Please do not send confidential material by email.</p>
 </form>
 
 <section class="done" id="done" hidden aria-live="polite">
@@ -157,6 +160,7 @@ const FORM_ACTION = "";
 const ENTRY = { name:"", email:"", group:"", contact:"", platform:"", scaling:"", cheap:"", costly:"", other:"", offer:"", links:"", confidential:"", agree:"", naming:"" };
 
 const f = document.getElementById("f");
+if (!FORM_ACTION) document.getElementById("pvbanner").hidden = false;
 const KEY = "mm_draft_v1";
 const fields = ["name","email","group","contact","platform","scaling","cheap","costly","other","links"];
 // keep an unsent draft in this browser only
@@ -195,7 +199,7 @@ f.addEventListener("submit", async e => {
     try { await fetch(FORM_ACTION, { method:"POST", mode:"no-cors", body }); sent = true; } catch (err) { sent = false; }
     if (!sent) { btn.disabled = false; btn.textContent = "Send my answers"; document.getElementById("status").textContent = "Sending failed. Please check your connection and try again."; return; }
   }
-  try { localStorage.removeItem(KEY); } catch (e) {}
+  if (FORM_ACTION) { try { localStorage.removeItem(KEY); } catch (e) {} }
   const ul = document.getElementById("summary"); ul.replaceChildren();
   [`${data.group}: ${data.platform}`, conf.length ? `Marked confidential: ${conf.join(", ")}` : "", offer.length ? `You offered: ${offer.join(", ").toLowerCase()}` : ""]
     .filter(Boolean).forEach(t => { const li = document.createElement("li"); li.textContent = t; ul.append(li); });

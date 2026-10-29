@@ -74,9 +74,10 @@ footer{border-top:1px solid var(--line);padding-top:16px}
 <body>
 <main>
 <header>
-  <p class="kicker">Quantum Algorithmic Primitives Atlas · Nobel Symposium 210</p>
+  <p class="kicker">Quantum Software Lab · Quantum Algorithmic Primitives Atlas</p>
   <h1>Primitive–Platform Matchmaking</h1>
-  <p class="lead">Tell us about your machine in about ten minutes. We map the algorithmic primitives onto it and send you a matchmaking report: which primitives fit your architecture natively, where the gaps are, and which experiments would show it.</p>
+  <p class="lead">Tell us about your machine in about ten minutes. We map the algorithmic primitives onto it and send you a matchmaking report: which primitives fit your hardware natively, where the gaps are, and which experiments would show it.</p>
+  <p>This is an open, academic pilot run by the Quantum Software Lab (University of Edinburgh) with the research community. It is non-commercial: nothing you share is used for any commercial purpose. We ask only for knowledge that is already in the public domain, such as published papers, talks and public specifications. Any level of participation is welcome, from a single paragraph to a conversation with your team.</p>
   <nav class="hub" aria-label="Three things to do here">
     <a class="tile take" id="formlink" href="take-part/"><span class="n">1</span><b>Take part</b><span>Answer five short questions, about ten minutes.</span><em>Answer the questions</em></a>
     <a class="tile" href="../"><span class="n">2</span><b>Browse the Atlas</b><span>42 primitives, their contracts, variants and composition map: what we match to your machine.</span><em>Open the Atlas</em></a>
@@ -87,15 +88,16 @@ footer{border-top:1px solid var(--line);padding-top:16px}
 
 <section>
   <h2>Why</h2>
-  <p>Algorithms are built from a small set of primitives, each defined by a contract: what it needs and what it guarantees. Machines differ in what they make cheap. Two devices on the same physics can favour different primitives because they scale differently: shuttling, photonic links, microwave control. Today the match between primitives and architectures is made case by case. We want to make it systematic, on correct data, with the people who build the machines.</p>
+  <p>Algorithms are built from a small set of primitives, each defined by a contract: what it needs and what it guarantees. Machines differ in what they make cheap. Two devices on the same physics can favour different primitives because they scale differently: shuttling, photonic links, microwave control. Today the match between primitives and hardware is made case by case. We want to make it systematic, on correct data, with the people who build the machines.</p>
+  <p class="small">A note on words: in the Atlas, an "architectural primitive" is a family of circuits, such as a quantum convolutional network. Your machine gets its own hardware card.</p>
 </section>
 
 <section>
   <h2>How it works</h2>
   <div class="flow">
-    <div class="step you"><span class="who">You</span><p>Describe your architecture and its cheap and costly operations, in your own words. Point us to papers, or a person.</p></div>
-    <div class="step us"><span class="who">We</span><p>Read your input with the Atlas cards and the literature, and match primitives and their variants to your architecture.</p></div>
-    <div class="step you"><span class="who">You</span><p>Receive your report first. You correct it, and you decide what, if anything, becomes public.</p></div>
+    <div class="step you"><span class="who">You</span><p>Describe your hardware and its cheap and costly operations, in your own words. Point us to papers, or a person.</p></div>
+    <div class="step us"><span class="who">We</span><p>Read your input with the Atlas cards and the literature, and match primitives and their variants to your machine.</p></div>
+    <div class="step you"><span class="who">You</span><p>Receive your report first, in early 2027. You correct it, and you decide what, if anything, becomes public.</p></div>
   </div>
 </section>
 
@@ -103,20 +105,20 @@ footer{border-top:1px solid var(--line);padding-top:16px}
   <h2>What we ask: five questions</h2>
   <ol class="ask">
     <li><span><b>Who you are.</b> Group, name, email, and whether a team member can be our contact.</span></li>
-    <li><span><b>Your architecture.</b> Platform, and how it scales: module size, and how modules are linked.</span></li>
+    <li><span><b>Your hardware.</b> Platform, and how it scales: module size, and how modules are linked.</span></li>
     <li><span><b>Your Lego pieces.</b> The three to five operations that are cheap or native on your machine, and the two or three that are most costly. In your own words.</span></li>
     <li><span><b>What you can share.</b> Papers or links, a contact person, a 30-minute call.</span></li>
     <li><span><b>Your consent</b> to the terms below.</span></li>
   </ol>
-  <p class="small">You do not need to choose primitives. Browse the Atlas to see what we will match; the matchmaking is our job.</p>
+  <p class="small">You do not need to choose primitives. Browse the Atlas to see what we will match; the matchmaking is our job. Please share only what is already public, and nothing under a non-disclosure agreement or export control.</p>
 </section>
 
 <section>
   <h2>What you get</h2>
   <ul class="get">
-    <li><b>A matchmaking report for your architecture:</b> primitives and variants that fit natively, the gaps, and experiments that would show it.</li>
-    <li><b>Your architecture card in the Atlas,</b> credited to your group, once you approve it.</li>
-    <li><b>Searches by our algorithm engine</b> aimed at the operations your machine does best.</li>
+    <li><b>A matchmaking report for your machine</b> in early 2027: primitives and variants that fit natively, the gaps, and experiments that would show it.</li>
+    <li><b>A hardware card for your machine in the Atlas,</b> credited to your group, once you approve it.</li>
+    <li><b>Searches by our algorithm engine,</b> where feasible, aimed at the operations your machine does best.</li>
     <li><b>An invitation to co-author</b> the joint white paper, for groups who contribute substantially.</li>
   </ul>
 </section>
@@ -124,19 +126,35 @@ footer{border-top:1px solid var(--line);padding-top:16px}
 <section class="charter-box" aria-labelledby="charter">
   <h2 id="charter">How we work together</h2>
   <ul class="charter">
-    <li><b>Findings go to you first.</b> Each group receives its own report before anything else happens.</li>
-    <li><b>Nothing is announced without your approval.</b> No statement about your platform is published, presented or posted without your written approval. You can withdraw your input at any time.</li>
+    <li><b>Open and non-commercial.</b> An academic pilot of the Quantum Software Lab. Nothing you share is used for commercial purposes.</li>
+    <li><b>Public knowledge only.</b> We ask only for what is already in the public domain. Please do not send anything under a non-disclosure agreement or export control.</li>
+    <li><b>Findings go to you first.</b> Each group receives its own report before anything based on its answers is shared.</li>
+    <li><b>Nothing based on your answers is announced without your approval.</b> No statement drawn from your answers is published, presented or posted without your written approval.</li>
+    <li><b>You can withdraw.</b> Write to the editor at any time and we delete your answers within 30 days. This does not apply to material you have already approved for publication.</li>
     <li><b>You keep your data</b> and may use the findings freely in your own papers, proposals and talks.</li>
-    <li><b>Fit, not ranking.</b> We match primitives to architectures. We will not publish a ranking of platforms.</li>
-    <li><b>Credit.</b> Contributors are named on the Atlas and on their architecture card. Co-authorship of the joint white paper follows criteria agreed in advance; other contributions are acknowledged.</li>
-    <li><b>Confidential answers stay confidential.</b> Mark any answer as confidential: it informs your own report only and never appears in public outputs, even in aggregate.</li>
-    <li><b>Use of AI tools.</b> AI agents help us read published papers and build the cards. Answers marked confidential are read by the editorial team only and are not given to AI tools.</li>
-    <li><b>The Atlas stays open.</b> It remains public and free, and contributors help shape its next versions.</li>
+    <li><b>Fit, not ranking.</b> We match primitives to hardware. We will not publish a ranking of platforms.</li>
+    <li><b>Credit.</b> Contributors are named on the Atlas and on their hardware card if they wish. The criteria for co-authorship of the joint white paper are sent to all contributors before any paper is drafted; other contributions are acknowledged.</li>
+    <li><b>Use of AI tools.</b> AI agents help us read published papers, build the cards and draft reports from non-confidential answers. Answers you mark as confidential are read by the editor only and are never given to AI tools or used in engine searches.</li>
+    <li><b>The Atlas stays open.</b> It is public, under a Creative Commons Attribution licence (CC BY 4.0), and contributors help shape its next versions.</li>
   </ul>
 </section>
 
+<section id="privacy">
+  <h2>Privacy notice</h2>
+  <ul class="get">
+    <li><b>Who holds your data:</b> Elham Kashefi, editor of the Atlas, Quantum Software Lab, University of Edinburgh.</li>
+    <li><b>What and why:</b> your name, email, group and answers, used only to prepare your matchmaking report, your hardware card and contributor credit.</li>
+    <li><b>Legal basis:</b> your consent, given in the form. You can withdraw it at any time.</li>
+    <li><b>Where it is stored:</b> in a Google Form and Sheet held in an account used only for this pilot, which only the editor reads and no AI tool or agent accesses. Google may process data outside the UK and the EU.</li>
+    <li><b>How long:</b> for the duration of the pilot, and at most three years after you answer; earlier if you ask.</li>
+    <li><b>Your rights:</b> to see, correct or delete your data, and to withdraw consent, by writing to the editor. You may also complain to the UK Information Commissioner's Office or the data protection authority of your country.</li>
+    <li><b>A team contact:</b> please give a colleague's details only with their agreement.</li>
+  </ul>
+  <p class="small">Contact: Elham Kashefi, <span style="user-select:all">ekashefi@gmail.com</span>. Please do not send confidential material by email.</p>
+</section>
+
 <footer>
-  <p class="small">Led by Elham Kashefi, editor of the Quantum Algorithmic Primitives Atlas (University of Edinburgh; LIP6, Sorbonne Université and CNRS). Announced at Nobel Symposium 210, Stellenbosch, October 2026.</p>
+  <p class="small">A pilot of the Quantum Software Lab, led by Elham Kashefi, editor of the Quantum Algorithmic Primitives Atlas (University of Edinburgh; LIP6, Sorbonne Université and CNRS). Announced at Nobel Symposium 210, Stellenbosch, October 2026.</p>
 </footer>
 </main>
 </body>
