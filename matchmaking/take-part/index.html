@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Take Part: Matchmaking</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* One column of five numbered question blocks, a send bar, then a confirmation that replaces the form.
+   Needs in blue, guarantees in ochre, as on the rest of the site. */
+:root{
+  --bg:#f7f6f2;--surface:#ffffff;--ink:#1d1d1b;--ink2:#4a4a46;--muted:#6f6f69;--line:#d9d6cc;--field:#ffffff;
+  --need:#1E4E8C;--guar:#B5651D;--ok:#1b7f4b;--err:#a23b2a;--soft:#eef2f8;
+  --display:"Source Serif 4",Georgia,serif;--body:"IBM Plex Sans",system-ui,sans-serif;--mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#15161a;--surface:#1e2026;--ink:#ececea;--ink2:#c4c4c0;--muted:#9a9a94;--line:#3a3d47;--field:#24272f;
+  --need:#86ABE3;--guar:#E3A06A;--ok:#4fc28a;--err:#e88a78;--soft:#232a36;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#15161a;--surface:#1e2026;--ink:#ececea;--ink2:#c4c4c0;--muted:#9a9a94;--line:#3a3d47;--field:#24272f;
+  --need:#86ABE3;--guar:#E3A06A;--ok:#4fc28a;--err:#e88a78;--soft:#232a36;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 var(--body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+main{max-width:720px;margin:0 auto;display:grid;gap:26px}
+.back{font-size:14px;color:var(--need);text-decoration:none}
+.kicker{font:500 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(26px,5.5vw,36px);line-height:1.15;margin:0;text-wrap:balance}
+p{margin:0;color:var(--ink2);max-width:64ch}
+header{display:grid;gap:10px}
+form{display:grid;gap:18px}
+fieldset{margin:0;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:18px 18px 20px;display:grid;gap:14px;min-width:0}
+legend{display:flex;gap:10px;align-items:center;padding:0 6px;font-family:var(--display);font-weight:600;font-size:20px}
+legend .n{font:600 14px var(--mono);color:var(--need);border:1.5px solid var(--need);border-radius:50%;width:28px;height:28px;display:grid;place-items:center}
+.hint{font-size:14px;color:var(--muted);margin-top:-6px}
+.field{display:grid;gap:6px;min-width:0}
+label.q{font-weight:600;font-size:15px;color:var(--ink)}
+label.q .opt{font-weight:400;color:var(--muted)}
+input[type=text],input[type=email],textarea{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--field);border:1.5px solid var(--line);border-radius:8px;padding:10px 12px}
+textarea{min-height:96px;resize:vertical}
+input:focus-visible,textarea:focus-visible{outline:none;border-color:var(--need);box-shadow:0 0 0 3px color-mix(in srgb,var(--need) 25%,transparent)}
+.row2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:560px){.row2{grid-template-columns:1fr}}
+.conf{display:inline-flex;gap:8px;align-items:center;font-size:13px;color:var(--muted);cursor:pointer;justify-self:start}
+.conf input{accent-color:var(--guar);width:16px;height:16px}
+.conf:has(input:checked){color:var(--guar);font-weight:600}
+.checks{display:grid;gap:8px}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:15px;color:var(--ink2);cursor:pointer}
+.check input{accent-color:var(--need);width:18px;height:18px;margin-top:2px;flex:none}
+.charter{background:var(--soft);border-radius:10px;padding:12px 14px;font-size:14px;color:var(--ink2);display:grid;gap:6px}
+.charter b{color:var(--ink)}
+.charter a,.small a{color:var(--need)}
+.err{color:var(--err);font-size:14px;display:none}
+.field.bad input,.field.bad textarea{border-color:var(--err)}
+.field.bad .err,.checks.bad + .err{display:block}
+.sendbar{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+button.send{font:600 16px var(--body);background:var(--need);color:var(--bg);border:0;border-radius:999px;padding:12px 26px;cursor:pointer}
+button.send:focus-visible{outline:2px solid var(--guar);outline-offset:3px}
+button.send[disabled]{opacity:.6;cursor:default}
+.small{font-size:13px;color:var(--muted)}
+.done{background:var(--surface);border:1.5px solid var(--ok);border-radius:12px;padding:22px;display:grid;gap:12px}
+.done h2{font-family:var(--display);font-size:24px;margin:0;color:var(--ink)}
+.done ul{margin:0;padding-left:1.2em;color:var(--ink2);display:grid;gap:4px}
+.preview{font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px}
+.links{display:flex;flex-wrap:wrap;gap:10px}
+.links a{font-size:14px;border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--need);text-decoration:none;background:var(--surface)}
+@media (prefers-reduced-motion:no-preference){.done{animation:in .25s ease-out}@keyframes in{from{opacity:.4;transform:translateY(6px)}to{opacity:1;transform:none}}}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <a class="back" href="../">&larr; Primitive–Platform Matchmaking</a>
+  <p class="kicker">Take part · about ten minutes</p>
+  <h1>Tell us about your machine</h1>
+  <p>Five short questions, in your own words. You do not need to choose primitives: the matchmaking is our job. Switch on "confidential" beside any answer that should inform your own report only.</p>
+</header>
+
+<form id="f" novalidate>
+  <fieldset>
+    <legend><span class="n">1</span>Who you are</legend>
+    <div class="row2">
+      <div class="field"><label class="q" for="name">Your name</label><input id="name" name="name" type="text" autocomplete="name" required><span class="err">Please add your name.</span></div>
+      <div class="field"><label class="q" for="email">Your email</label><input id="email" name="email" type="email" autocomplete="email" required><span class="err">Please add a valid email.</span></div>
+    </div>
+    <div class="field"><label class="q" for="group">Group and institution</label><input id="group" name="group" type="text" autocomplete="organization" required><span class="err">Please add your group.</span></div>
+    <div class="field"><label class="q" for="contact">A team member as our contact <span class="opt">(optional: name and email)</span></label><input id="contact" name="contact" type="text"></div>
+  </fieldset>
+
+  <fieldset>
+    <legend><span class="n">2</span>Your architecture</legend>
+    <div class="field"><label class="q" for="platform">Platform</label><input id="platform" name="platform" type="text" placeholder="For example trapped ions, neutral atoms, photonics, superconducting, spins" required><span class="err">Please name your platform.</span></div>
+    <div class="field"><label class="q" for="scaling">How does it scale?</label><p class="hint">Module size, and how modules are linked: shuttling, photonic links, microwave, other. What changes from tens to thousands of qubits?</p><textarea id="scaling" name="scaling" required></textarea><span class="err">Please describe how it scales.</span>
+      <label class="conf"><input type="checkbox" name="conf_scaling"> Confidential</label></div>
+  </fieldset>
+
+  <fieldset>
+    <legend><span class="n">3</span>Your Lego pieces</legend>
+    <div class="field"><label class="q" for="cheap">Three to five operations that are cheap or native on your machine</label><p class="hint">Gates, interactions, measurements, moves or links: whatever your machine does well.</p><textarea id="cheap" name="cheap" required></textarea><span class="err">Please list a few cheap or native operations.</span>
+      <label class="conf"><input type="checkbox" name="conf_cheap"> Confidential</label></div>
+    <div class="field"><label class="q" for="costly">Two or three operations that are most costly</label><textarea id="costly" name="costly" required></textarea><span class="err">Please list the costly operations.</span>
+      <label class="conf"><input type="checkbox" name="conf_costly"> Confidential</label></div>
+    <div class="field"><label class="q" for="other">Anything else we should know <span class="opt">(optional)</span></label><textarea id="other" name="other"></textarea>
+      <label class="conf"><input type="checkbox" name="conf_other"> Confidential</label></div>
+  </fieldset>
+
+  <fieldset>
+    <legend><span class="n">4</span>What you can share</legend>
+    <div class="checks" role="group" aria-label="What you can offer">
+      <label class="check"><input type="checkbox" name="offer" value="papers"> Papers or links</label>
+      <label class="check"><input type="checkbox" name="offer" value="contact"> A contact person in my team</label>
+      <label class="check"><input type="checkbox" name="offer" value="call"> A 30-minute call</label>
+    </div>
+    <div class="field"><label class="q" for="links">Papers or links <span class="opt">(optional)</span></label><textarea id="links" name="links" placeholder="arXiv numbers, DOIs or web links"></textarea>
+      <label class="conf"><input type="checkbox" name="conf_links"> Confidential</label></div>
+  </fieldset>
+
+  <fieldset>
+    <legend><span class="n">5</span>Your consent</legend>
+    <div class="charter">
+      <span><b>Findings go to you first.</b> Nothing about your platform is announced without your written approval; you can withdraw at any time.</span>
+      <span><b>You keep your data</b> and may use the findings freely. <b>Fit, not ranking:</b> no league table of platforms.</span>
+      <span><b>Confidential answers</b> inform your own report only, never appear in public outputs, and are not given to AI tools.</span>
+      <span>Full terms: <a href="../#charter">How we work together</a></span>
+    </div>
+    <div>
+      <div class="checks" id="agreebox"><label class="check"><input type="checkbox" id="agree" name="agree" required> I have read the terms and agree to them</label></div>
+      <span class="err" id="agreeerr">Please agree to the terms to send.</span>
+    </div>
+    <div class="field"><span class="q">May we name you and your group as contributors on the Atlas?</span>
+      <div class="checks" role="radiogroup">
+        <label class="check"><input type="radio" name="naming" value="yes"> Yes</label>
+        <label class="check"><input type="radio" name="naming" value="later" checked> Ask me when the report is ready</label>
+        <label class="check"><input type="radio" name="naming" value="no"> No</label>
+      </div></div>
+  </fieldset>
+
+  <div class="sendbar"><button class="send" type="submit" id="send">Send my answers</button><span class="small" id="status" aria-live="polite"></span></div>
+  <p class="small">Questions: write to Elham Kashefi, <span style="user-select:all">ekashefi@gmail.com</span>.</p>
+</form>
+
+<section class="done" id="done" hidden aria-live="polite">
+  <h2>Thank you</h2>
+  <p>Your report comes to you first, and nothing about your platform is made public without your written approval.</p>
+  <ul id="summary"></ul>
+  <div class="links"><a href="../../">Browse the Atlas</a><a href="../../talk/">Slides from the talk</a><a href="../">Back to Matchmaking</a></div>
+  <p class="preview" id="previewnote" hidden>Preview: answers are not yet being collected. Collection starts when the form is connected.</p>
+</section>
+</main>
+
+<script>
+// Where answers go. Empty: preview mode (nothing leaves the browser).
+// To collect into a Google Sheet: set FORM_ACTION to the Google Form's formResponse URL and map each field to its entry id.
+const FORM_ACTION = "";
+const ENTRY = { name:"", email:"", group:"", contact:"", platform:"", scaling:"", cheap:"", costly:"", other:"", offer:"", links:"", confidential:"", agree:"", naming:"" };
+
+const f = document.getElementById("f");
+const KEY = "mm_draft_v1";
+const fields = ["name","email","group","contact","platform","scaling","cheap","costly","other","links"];
+// keep an unsent draft in this browser only
+try { const d = JSON.parse(localStorage.getItem(KEY) || "{}"); fields.forEach(k => { if (d[k]) f.elements[k].value = d[k]; }); } catch (e) {}
+f.addEventListener("input", () => { try { const d = {}; fields.forEach(k => d[k] = f.elements[k].value); localStorage.setItem(KEY, JSON.stringify(d)); } catch (e) {} });
+
+function check() {
+  let ok = true, first = null;
+  f.querySelectorAll("[required]").forEach(el => {
+    if (el.type === "checkbox") return;
+    const bad = !el.value.trim() || (el.type === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value.trim()));
+    el.closest(".field").classList.toggle("bad", bad);
+    if (bad) { ok = false; first = first || el; }
+  });
+  const agree = document.getElementById("agree");
+  document.getElementById("agreeerr").style.display = agree.checked ? "none" : "block";
+  if (!agree.checked) { ok = false; first = first || agree; }
+  if (first) first.focus();
+  return ok;
+}
+
+f.addEventListener("submit", async e => {
+  e.preventDefault();
+  if (!check()) { document.getElementById("status").textContent = "Please complete the marked answers."; return; }
+  const v = k => f.elements[k].value.trim();
+  const offer = [...f.querySelectorAll('input[name=offer]:checked')].map(x => x.parentElement.textContent.trim());
+  const conf = [...f.querySelectorAll('.conf input:checked')].map(x => x.name.replace("conf_", ""));
+  const naming = f.querySelector('input[name=naming]:checked')?.value || "later";
+  const data = { name:v("name"), email:v("email"), group:v("group"), contact:v("contact"), platform:v("platform"), scaling:v("scaling"),
+    cheap:v("cheap"), costly:v("costly"), other:v("other"), offer:offer.join("; "), links:v("links"), confidential:conf.join("; "), agree:"I agree", naming };
+  const btn = document.getElementById("send"); btn.disabled = true; btn.textContent = "Sending…";
+  let sent = false;
+  if (FORM_ACTION) {
+    const body = new URLSearchParams();
+    Object.entries(ENTRY).forEach(([k, id]) => { if (id) body.append(id, data[k] || ""); });
+    try { await fetch(FORM_ACTION, { method:"POST", mode:"no-cors", body }); sent = true; } catch (err) { sent = false; }
+    if (!sent) { btn.disabled = false; btn.textContent = "Send my answers"; document.getElementById("status").textContent = "Sending failed. Please check your connection and try again."; return; }
+  }
+  try { localStorage.removeItem(KEY); } catch (e) {}
+  const ul = document.getElementById("summary"); ul.replaceChildren();
+  [`${data.group}: ${data.platform}`, conf.length ? `Marked confidential: ${conf.join(", ")}` : "", offer.length ? `You offered: ${offer.join(", ").toLowerCase()}` : ""]
+    .filter(Boolean).forEach(t => { const li = document.createElement("li"); li.textContent = t; ul.append(li); });
+  document.getElementById("previewnote").hidden = !!FORM_ACTION;
+  f.hidden = true; document.getElementById("done").hidden = false; window.scrollTo({ top: 0, behavior: "smooth" });
+});
+</script>
+</body>
+</html>
