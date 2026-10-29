@@ -77,7 +77,7 @@ button.send[disabled]{opacity:.6;cursor:default}
   <a class="back" href="../">&larr; Primitive–Platform Matchmaking</a>
   <p class="kicker">Take part · about ten minutes · born at Nobel Symposium 210</p>
   <h1>Tell us about your machine</h1>
-  <p>Five short questions, in your own words. You do not need to choose primitives: the matchmaking is our job. Please share only what is already public. Switch on "confidential" beside any answer you prefer us not to quote: it then informs your own report only.</p>
+  <p>Six short questions, in your own words; the optional ones are marked. You do not need to choose primitives: the matchmaking is our job. Please share only what is already public. Switch on "confidential" beside any answer you prefer us not to quote: it then informs your own report only.</p>
 </header>
 
 <form id="f" novalidate>
@@ -96,6 +96,8 @@ button.send[disabled]{opacity:.6;cursor:default}
     <div class="field"><label class="q" for="platform">Platform</label><input id="platform" name="platform" type="text" placeholder="For example trapped ions, neutral atoms, photonics, superconducting, spins" required><span class="err">Please name your platform.</span></div>
     <div class="field"><label class="q" for="scaling">How does it scale?</label><p class="hint">Module size, and how modules are linked: shuttling, photonic links, microwave, other. What changes from tens to thousands of qubits?</p><textarea id="scaling" name="scaling" required></textarea><span class="err">Please describe how it scales.</span>
       <label class="conf"><input type="checkbox" name="conf_scaling"> Confidential</label></div>
+    <div class="field"><label class="q" for="modular">Is your machine modular, and how do the modules interact? <span class="opt">(optional)</span></label><p class="hint">For example: modules linked by photons, microwaves or moving qubits; the rate and quality of the links; which operations work across modules.</p><textarea id="modular" name="modular"></textarea>
+      <label class="conf"><input type="checkbox" name="conf_modular"> Confidential</label></div>
   </fieldset>
 
   <fieldset>
@@ -109,7 +111,16 @@ button.send[disabled]{opacity:.6;cursor:default}
   </fieldset>
 
   <fieldset>
-    <legend><span class="n">4</span>What you can share</legend>
+    <legend><span class="n">4</span>Input and output</legend>
+    <p class="hint" style="margin-top:0">How information goes in and out of your machine. Quantum links matter for verification, and for joining communication and computing.</p>
+    <div class="field"><label class="q" for="io_classical">Classical input and output <span class="opt">(optional)</span></label><p class="hint">How data and programs get in, how results come out, and how fast: loading data, mid-circuit readout and feedback, shots per second.</p><textarea id="io_classical" name="io_classical"></textarea>
+      <label class="conf"><input type="checkbox" name="conf_io_classical"> Confidential</label></div>
+    <div class="field"><label class="q" for="io_quantum">Quantum input and output <span class="opt">(optional)</span></label><p class="hint">Can your machine receive or send quantum states, for example through a photonic or network link? With which encoding, rate and fidelity? Is it used, or planned, for networking or for verifying a computation?</p><textarea id="io_quantum" name="io_quantum"></textarea>
+      <label class="conf"><input type="checkbox" name="conf_io_quantum"> Confidential</label></div>
+  </fieldset>
+
+  <fieldset>
+    <legend><span class="n">5</span>What you can share, and what you would like to ask</legend>
     <div class="checks" role="group" aria-label="What you can offer">
       <label class="check"><input type="checkbox" name="offer" value="papers"> Papers or links</label>
       <label class="check"><input type="checkbox" name="offer" value="contact"> A contact person in my team</label>
@@ -117,10 +128,11 @@ button.send[disabled]{opacity:.6;cursor:default}
     </div>
     <div class="field"><label class="q" for="links">Papers or links <span class="opt">(optional)</span></label><textarea id="links" name="links" placeholder="arXiv numbers, DOIs or web links"></textarea>
       <label class="conf"><input type="checkbox" name="conf_links"> Confidential</label></div>
+    <div class="field"><label class="q" for="theory_q">A theory question for us <span class="opt">(optional)</span></label><p class="hint">Any question about algorithms, primitives, complexity or verification that matters for your machine. We will answer it as part of the matchmaking.</p><textarea id="theory_q" name="theory_q"></textarea></div>
   </fieldset>
 
   <fieldset>
-    <legend><span class="n">5</span>Your consent</legend>
+    <legend><span class="n">6</span>Your consent</legend>
     <div class="charter">
       <span><b>Open, academic and non-commercial:</b> a pilot of the Quantum Software Lab. We ask only for public knowledge; nothing under a non-disclosure agreement or export control.</span>
       <span><b>Findings go to you first.</b> Nothing based on your answers is announced without your written approval; you can withdraw at any time.</span>
@@ -157,12 +169,12 @@ button.send[disabled]{opacity:.6;cursor:default}
 // Where answers go. Empty: preview mode (nothing leaves the browser).
 // To collect into a Google Sheet: set FORM_ACTION to the Google Form's formResponse URL and map each field to its entry id.
 const FORM_ACTION = "";
-const ENTRY = { name:"", email:"", group:"", contact:"", platform:"", scaling:"", cheap:"", costly:"", other:"", offer:"", links:"", confidential:"", agree:"", naming:"" };
+const ENTRY = { name:"", email:"", group:"", contact:"", platform:"", scaling:"", modular:"", cheap:"", costly:"", other:"", io_classical:"", io_quantum:"", offer:"", links:"", theory_q:"", confidential:"", agree:"", naming:"" };
 
 const f = document.getElementById("f");
 if (!FORM_ACTION) document.getElementById("pvbanner").hidden = false;
 const KEY = "mm_draft_v1";
-const fields = ["name","email","group","contact","platform","scaling","cheap","costly","other","links"];
+const fields = ["name","email","group","contact","platform","scaling","modular","cheap","costly","other","io_classical","io_quantum","links","theory_q"];
 // keep an unsent draft in this browser only
 try { const d = JSON.parse(localStorage.getItem(KEY) || "{}"); fields.forEach(k => { if (d[k]) f.elements[k].value = d[k]; }); } catch (e) {}
 f.addEventListener("input", () => { try { const d = {}; fields.forEach(k => d[k] = f.elements[k].value); localStorage.setItem(KEY, JSON.stringify(d)); } catch (e) {} });
@@ -189,8 +201,8 @@ f.addEventListener("submit", async e => {
   const offer = [...f.querySelectorAll('input[name=offer]:checked')].map(x => x.parentElement.textContent.trim());
   const conf = [...f.querySelectorAll('.conf input:checked')].map(x => x.name.replace("conf_", ""));
   const naming = f.querySelector('input[name=naming]:checked')?.value || "later";
-  const data = { name:v("name"), email:v("email"), group:v("group"), contact:v("contact"), platform:v("platform"), scaling:v("scaling"),
-    cheap:v("cheap"), costly:v("costly"), other:v("other"), offer:offer.join("; "), links:v("links"), confidential:conf.join("; "), agree:"I agree", naming };
+  const data = { name:v("name"), email:v("email"), group:v("group"), contact:v("contact"), platform:v("platform"), scaling:v("scaling"), modular:v("modular"),
+    cheap:v("cheap"), costly:v("costly"), other:v("other"), io_classical:v("io_classical"), io_quantum:v("io_quantum"), offer:offer.join("; "), links:v("links"), theory_q:v("theory_q"), confidential:conf.join("; "), agree:"I agree", naming };
   const btn = document.getElementById("send"); btn.disabled = true; btn.textContent = "Sending…";
   let sent = false;
   if (FORM_ACTION) {
