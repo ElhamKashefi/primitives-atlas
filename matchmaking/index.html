@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Primitive–Platform Matchmaking</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* One reading column. The page states one offer: describe your architecture, we match primitives to it.
+   Needs in blue, guarantees in ochre, as in the Atlas and the talk. */
+:root{
+  --bg:#f7f6f2;--surface:#ffffff;--ink:#1d1d1b;--ink2:#4a4a46;--muted:#6f6f69;--line:#e2e0d9;
+  --need:#1E4E8C;--guar:#B5651D;--chip:#efede7;--draft:#8a5a00;--draftbg:#fff4dc;
+  --display:"Source Serif 4",Georgia,serif;--body:"IBM Plex Sans",system-ui,sans-serif;--mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#15161a;--surface:#1e2026;--ink:#ececea;--ink2:#c4c4c0;--muted:#9a9a94;--line:#2e3039;
+  --need:#86ABE3;--guar:#E3A06A;--chip:#2a2c34;--draft:#f0c060;--draftbg:#3a3020;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#15161a;--surface:#1e2026;--ink:#ececea;--ink2:#c4c4c0;--muted:#9a9a94;--line:#2e3039;
+  --need:#86ABE3;--guar:#E3A06A;--chip:#2a2c34;--draft:#f0c060;--draftbg:#3a3020;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 56px}
+main{max-width:760px;margin:0 auto;display:grid;gap:36px}
+.draft{background:var(--draftbg);color:var(--draft);font:500 13px var(--mono);letter-spacing:.04em;text-align:center;padding:8px 12px;margin:0 calc(-1*max(16px,env(safe-area-inset-left,0px))) 0}
+header{display:grid;gap:12px;padding-top:36px}
+.kicker{font:500 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(28px,6vw,40px);line-height:1.12;margin:0;text-wrap:balance}
+h2{font-family:var(--display);font-weight:600;font-size:22px;line-height:1.2;margin:0;text-wrap:balance}
+p{margin:0;color:var(--ink2);max-width:66ch}
+.lead{font-size:18px;color:var(--ink)}
+section{display:grid;gap:14px}
+.flow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.step{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:grid;gap:6px;align-content:start;min-width:0}
+.step .who{font:600 12px var(--mono);letter-spacing:.06em;text-transform:uppercase}
+.step.you .who{color:var(--need)}.step.us .who{color:var(--guar)}
+.step p{font-size:15px}
+@media (max-width:640px){.flow{grid-template-columns:1fr}}
+ol.ask{margin:0;padding:0;list-style:none;display:grid;gap:10px;counter-reset:q}
+ol.ask li{counter-increment:q;display:grid;grid-template-columns:34px minmax(0,1fr);gap:10px;align-items:start}
+ol.ask li::before{content:counter(q);font:600 15px var(--mono);color:var(--need);border:1.5px solid var(--need);border-radius:50%;width:28px;height:28px;display:grid;place-items:center}
+ol.ask b{color:var(--ink);font-weight:600}
+ul.get,ul.charter{margin:0;padding-left:1.2em;display:grid;gap:8px;max-width:66ch;color:var(--ink2)}
+ul.get b,ul.charter b{color:var(--ink);font-weight:600}
+.charter-box{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--guar);border-radius:10px;padding:18px 20px;display:grid;gap:12px}
+.cta{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.btn{display:inline-block;font:600 15px var(--body);padding:10px 18px;border-radius:999px;text-decoration:none;border:1.5px solid var(--need);color:var(--need)}
+.btn.primary{background:var(--need);color:var(--bg)}
+.btn[aria-disabled="true"]{opacity:.55;pointer-events:none}
+a{color:var(--need)}
+a:focus-visible,.btn:focus-visible{outline:2px solid var(--guar);outline-offset:3px}
+.small{font-size:14px;color:var(--muted)}
+footer{border-top:1px solid var(--line);padding-top:16px}
+</style>
+</head>
+<body>
+<div class="draft">DRAFT FOR COMMENT · 29 October 2026 · not yet open for answers</div>
+<main>
+<header>
+  <p class="kicker">Quantum Algorithmic Primitives Atlas · Nobel Symposium 210</p>
+  <h1>Primitive–Platform Matchmaking</h1>
+  <p class="lead">Tell us about your machine in about ten minutes. We map the algorithmic primitives onto it and send you a matchmaking report: which primitives fit your architecture natively, where the gaps are, and which experiments would show it.</p>
+  <div class="cta">
+    <a class="btn primary" href="#" aria-disabled="true">Answer the five questions (opens Friday)</a>
+    <a class="btn" href="../">Open the Atlas</a>
+  </div>
+</header>
+
+<section>
+  <h2>Why</h2>
+  <p>Algorithms are built from a small set of primitives, each defined by a contract: what it needs and what it guarantees. Machines differ in what they make cheap. Two devices on the same physics can favour different primitives because they scale differently: shuttling, photonic links, microwave control. Today the match between primitives and architectures is made case by case. We want to make it systematic, on correct data, with the people who build the machines.</p>
+</section>
+
+<section>
+  <h2>How it works</h2>
+  <div class="flow">
+    <div class="step you"><span class="who">You</span><p>Describe your architecture and its cheap and costly operations, in your own words. Point us to papers, or a person.</p></div>
+    <div class="step us"><span class="who">We</span><p>Read your input with the Atlas cards and the literature, and match primitives and their variants to your architecture.</p></div>
+    <div class="step you"><span class="who">You</span><p>Receive your report first. You correct it, and you decide what, if anything, becomes public.</p></div>
+  </div>
+</section>
+
+<section>
+  <h2>What we ask: five questions</h2>
+  <ol class="ask">
+    <li><span><b>Who you are.</b> Group, name, email, and whether a team member can be our contact.</span></li>
+    <li><span><b>Your architecture.</b> Platform, and how it scales: module size, and how modules are linked.</span></li>
+    <li><span><b>Your Lego pieces.</b> The three to five operations that are cheap or native on your machine, and the two or three that are most costly. In your own words.</span></li>
+    <li><span><b>What you can share.</b> Papers or links, a contact person, a 30-minute call.</span></li>
+    <li><span><b>Your consent</b> to the terms below.</span></li>
+  </ol>
+  <p class="small">You do not need to choose primitives. Browse the Atlas to see what we will match; the matchmaking is our job.</p>
+</section>
+
+<section>
+  <h2>What you get</h2>
+  <ul class="get">
+    <li><b>A matchmaking report for your architecture:</b> primitives and variants that fit natively, the gaps, and experiments that would show it.</li>
+    <li><b>Your architecture card in the Atlas,</b> credited to your group, once you approve it.</li>
+    <li><b>Searches by our algorithm engine</b> aimed at the operations your machine does best.</li>
+    <li><b>An invitation to co-author</b> the joint white paper, for groups who contribute substantially.</li>
+  </ul>
+</section>
+
+<section class="charter-box" aria-labelledby="charter">
+  <h2 id="charter">How we work together</h2>
+  <ul class="charter">
+    <li><b>Findings go to you first.</b> Each group receives its own report before anything else happens.</li>
+    <li><b>Nothing is announced without your approval.</b> No statement about your platform is published, presented or posted without your written approval. You can withdraw your input at any time.</li>
+    <li><b>You keep your data</b> and may use the findings freely in your own papers, proposals and talks.</li>
+    <li><b>Fit, not ranking.</b> We match primitives to architectures. We will not publish a ranking of platforms.</li>
+    <li><b>Credit.</b> Contributors are named on the Atlas and on their architecture card. Co-authorship of the joint white paper follows criteria agreed in advance; other contributions are acknowledged.</li>
+    <li><b>Confidential answers stay confidential.</b> Mark any answer as confidential: it informs your own report only and never appears in public outputs, even in aggregate.</li>
+    <li><b>Use of AI tools.</b> AI agents help us read published papers and build the cards. Answers marked confidential are read by the editorial team only and are not given to AI tools.</li>
+    <li><b>The Atlas stays open.</b> It remains public and free, and contributors help shape its next versions.</li>
+  </ul>
+</section>
+
+<footer>
+  <p class="small">Led by Elham Kashefi, editor of the Quantum Algorithmic Primitives Atlas (University of Edinburgh; LIP6, Sorbonne Université and CNRS). Announced at Nobel Symposium 210, Stellenbosch, October 2026.</p>
+</footer>
+</main>
+</body>
+</html>
